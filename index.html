@@ -463,15 +463,12 @@
     <section class="hero" id="discover" aria-labelledby="hero-title">
       <div class="hero-art" aria-hidden="true"></div>
       <div class="hero-copy">
-        <span class="eyebrow">Spotlight pick · 2025</span>
-        <h1 id="hero-title">Some nights change everything.</h1>
-        <p>A haunting Southern gothic where music, family, and the supernatural collide.</p>
+        <span class="eyebrow">Latest year · <span id="latest-year-label">2026</span></span>
+        <h1 id="hero-title">Explore the latest movies.</h1>
+        <p>Browse titles from the newest year in the catalog, across languages and film industries.</p>
         <div class="hero-meta">
-          <span>2025</span><span aria-hidden="true">·</span><span>Drama</span><span aria-hidden="true">·</span>
-          <span class="rating">
-            <svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 5.88 6.49.94-4.7 4.58 1.11 6.47L12 17.31l-5.8 3.06 1.11-6.47-4.7-4.58 6.49-.94L12 2.5Z"/></svg>
-            8.2
-          </span>
+          <span id="latest-year-meta">2026</span><span aria-hidden="true">·</span>
+          <span id="latest-movie-count">73 movies</span>
         </div>
         <div class="hero-buttons">
           <a class="button secondary" href="#movies">
@@ -486,7 +483,7 @@
       <div class="section-heading">
         <div>
           <h2>Fresh from the big screen</h2>
-          <p>Curated picks from Indian film industries and around the world. Browse by year, language, and genre.</p>
+          <p>Showing movies from the newest year in the catalog. Change the year filter to explore older titles.</p>
         </div>
         <div class="movie-controls">
           <label class="search-wrap">
@@ -728,14 +725,19 @@
       movie.searchText = `${movie.title} ${movie.genre} ${movie.year} ${movie.language} ${movie.industry}`.toLowerCase();
     });
     const yearFilter = document.querySelector("#year-filter");
-    [...new Set(movies.map(movie => movie.year))]
-      .sort((a, b) => b - a)
-      .forEach(year => {
+    const movieYears = [...new Set(movies.map(movie => movie.year))].sort((a, b) => b - a);
+    const latestMovieYear = movieYears[0];
+    movieYears.forEach(year => {
         const option = document.createElement("option");
         option.value = String(year);
         option.textContent = String(year);
         yearFilter.append(option);
       });
+    yearFilter.value = String(latestMovieYear);
+    const latestYearMovieCount = movies.filter(movie => movie.year === latestMovieYear).length;
+    document.querySelector("#latest-year-label").textContent = String(latestMovieYear);
+    document.querySelector("#latest-year-meta").textContent = String(latestMovieYear);
+    document.querySelector("#latest-movie-count").textContent = `${latestYearMovieCount} movies`;
     const grid = document.querySelector("#movie-grid");
     const search = document.querySelector("#movie-search");
     const genreFilters = [...document.querySelectorAll("[data-genre]")];
@@ -838,29 +840,14 @@
 
     function fallbackPosterUrl(movie) {
       const hue = [...movie.title].reduce((value, character) => (value * 31 + character.charCodeAt(0)) % 360, 0);
-      const escapeText = value => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-      const titleLines = [];
-      let line = "";
-      movie.title.split(/\s+/).forEach(word => {
-        if (line && `${line} ${word}`.length > 22) {
-          titleLines.push(line);
-          line = word;
-        } else {
-          line = line ? `${line} ${word}` : word;
-        }
-      });
-      if (line) titleLines.push(line);
-      const titleMarkup = titleLines.slice(0, 3).map((titleLine, index) =>
-        `<text x="28" y="${374 + index * 27}" fill="#fff" font-family="Arial,sans-serif" font-size="24" font-weight="700">${escapeText(titleLine)}</text>`
-      ).join("");
-      const poster = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="hsl(${hue} 42% 33%)"/><stop offset="1" stop-color="hsl(${(hue + 65) % 360} 48% 10%)"/></linearGradient><linearGradient id="shade" y2="1"><stop stop-color="#08090e" stop-opacity="0"/><stop offset="1" stop-color="#08090e" stop-opacity=".95"/></linearGradient></defs><path fill="url(#bg)" d="M0 0h300v450H0z"/><circle cx="208" cy="154" r="104" fill="none" stroke="#fff" stroke-opacity=".18"/><circle cx="208" cy="154" r="76" fill="none" stroke="#fff" stroke-opacity=".12"/><path d="M0 310 300 100v350H0z" fill="#fff" fill-opacity=".035"/><path d="M34 72h54M34 82h34" stroke="#fff" stroke-opacity=".65" stroke-width="2"/><path fill="url(#shade)" d="M0 225h300v225H0z"/><text x="28" y="337" fill="#fff" font-family="Arial,sans-serif" font-size="10" letter-spacing="4" opacity=".78">MOVIES WIZZ · ${movie.year}</text>${titleMarkup}<text x="28" y="432" fill="#fff" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" opacity=".75">${escapeText(movie.language.toUpperCase())}</text><path d="M28 442h244" stroke="#fff" stroke-opacity=".4"/></svg>`;
+      const poster = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="hsl(${hue} 42% 33%)"/><stop offset="1" stop-color="hsl(${(hue + 65) % 360} 48% 10%)"/></linearGradient><linearGradient id="shade" y2="1"><stop stop-color="#08090e" stop-opacity="0"/><stop offset="1" stop-color="#08090e" stop-opacity=".95"/></linearGradient></defs><path fill="url(#bg)" d="M0 0h300v450H0z"/><circle cx="208" cy="154" r="104" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2"/><circle cx="208" cy="154" r="76" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="2"/><path d="M0 300 300 80v370H0z" fill="#fff" fill-opacity=".045"/><path d="M34 72h54M34 82h34" stroke="#fff" stroke-opacity=".7" stroke-width="2"/><path fill="url(#shade)" d="M0 225h300v225H0z"/><text x="28" y="390" fill="#fff" font-family="Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="5" opacity=".18">MW</text></svg>`;
       return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(poster)}`;
     }
 
     function renderMovieCard(movie) {
       const fallback = fallbackPosterUrl(movie);
       const poster = posterImages[movie.title];
-      const lookup = poster ? "" : `data-poster-lookup="${encodeURIComponent(movie.title.replaceAll(" ", "_"))}"`;
+      const lookup = poster ? "" : `data-poster-lookup="${encodeURIComponent(movie.title)}"`;
       return `
         <article class="movie-card">
           <a class="poster" href="${movieDetailsUrl(movie.title)}" aria-label="View details for ${movie.title}" style="--poster:${movie.style}">
@@ -877,35 +864,55 @@
         </article>`;
     }
 
-    async function fetchMovieSummary(movie, signal) {
+    async function fetchMovieSummary(movie, signal, requireThumbnail = false) {
       const summaryUrl = title => `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replaceAll(" ", "_"))}`;
       let response = await fetch(summaryUrl(movie.title), { signal });
       let summary = response.ok ? await response.json() : null;
+      const isMovieArticle = candidate => {
+        const description = candidate?.description || "";
+        return /\b(film|movie)\b/i.test(description)
+          && String(candidate?.title || "").toLowerCase().includes(String(movie.year));
+      };
 
       if (response.status !== 404 && !response.ok) {
         throw new Error(`Movie details lookup returned ${response.status}`);
       }
-      if (summary?.type === "disambiguation" || !summary?.extract) {
+      if (summary?.type === "disambiguation" || !summary?.extract
+        || (requireThumbnail && (!summary.thumbnail?.source || !isMovieArticle(summary)))) {
         const searchUrl = new URL("https://en.wikipedia.org/w/api.php");
         searchUrl.search = new URLSearchParams({
           action: "query",
           list: "search",
           srsearch: `${movie.title} ${movie.year} film`,
+          srlimit: "20",
           format: "json",
           origin: "*"
         }).toString();
         response = await fetch(searchUrl, { signal });
         if (!response.ok) throw new Error(`Movie details search returned ${response.status}`);
         const searchResults = await response.json();
-        const result = searchResults.query?.search?.find(entry => entry.title.toLowerCase().includes(movie.title.toLowerCase()) && entry.title.includes(String(movie.year)))
-          || searchResults.query?.search?.find(entry => entry.title.toLowerCase().includes(movie.title.toLowerCase()));
+        const titlePrefix = `${movie.title.toLowerCase()} (`;
+        const matchingResults = (searchResults.query?.search || []).filter(entry => {
+          const resultTitle = entry.title.toLowerCase();
+          const snippet = (entry.snippet || "").replace(/<[^>]*>/g, "");
+          const isTitleMatch = resultTitle === movie.title.toLowerCase() || resultTitle.startsWith(titlePrefix);
+          return isTitleMatch
+            && (resultTitle.includes(String(movie.year)) || snippet.includes(String(movie.year)))
+            && (!requireThumbnail || /\b(film|movie)\b/i.test(snippet));
+        });
+        const result = matchingResults.find(entry =>
+          entry.title.toLowerCase().startsWith(titlePrefix)
+          && entry.title.toLowerCase().includes(String(movie.year))
+        ) || matchingResults[0];
         if (result) {
           response = await fetch(summaryUrl(result.title), { signal });
           if (!response.ok) throw new Error(`Movie overview lookup returned ${response.status}`);
           summary = await response.json();
         }
       }
-      return summary?.type === "disambiguation" ? null : summary;
+      if (summary?.type === "disambiguation" || !summary?.extract) return null;
+      if (requireThumbnail && !summary.thumbnail?.source) return null;
+      return summary;
     }
 
     let detailRequestController;
@@ -1049,13 +1056,13 @@
         const image = posterLookupQueue.shift();
         if (!image.isConnected) continue;
         const title = decodeURIComponent(image.dataset.posterLookup);
+        const movie = movies.find(entry => entry.title === title);
+        if (!movie) {
+          image.removeAttribute("data-poster-lookup");
+          continue;
+        }
         activePosterLookups++;
-        fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${image.dataset.posterLookup}`)
-          .then(response => {
-            if (response.status === 404) return null;
-            if (!response.ok) throw new Error(`Wikipedia poster lookup returned ${response.status}`);
-            return response.json();
-          })
+        fetchMovieSummary(movie, undefined, true)
           .then(data => {
             if (data?.thumbnail?.source) image.src = data.thumbnail.source;
             image.removeAttribute("data-poster-lookup");
@@ -1080,7 +1087,7 @@
         const matchesIndustry = activeIndustry === "All" || movie.industry === activeIndustry;
         const matchesSaved = !showSaved || saved.has(movie.title);
         return matchesSearch && matchesYear && matchesGenre && matchesIndustry && matchesSaved;
-      });
+      }).sort((a, b) => b.year - a.year);
 
       if (results.length === 0) {
         grid.innerHTML = `<div class="empty-state">${showSaved && saved.size === 0 ? "Your list is ready when you are — save a movie with the bookmark icon." : "No movies found. Try another title, language, or cinema."}</div>`;
