@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101014">
-  <meta name="description" content="Discover your next movie night and find official places to stream, rent, or buy the latest movies.">
-  <title>FRAME — Find your next favorite</title>
+  <meta name="description" content="Discover movies from Indian film industries and around the world. Explore movie details, posters, and legal downloads of public-domain classics.">
+  <title>movies wizz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,12 +14,10 @@
       color-scheme: dark;
       --bg: #101014;
       --panel: #19191f;
-      --panel-light: #222229;
       --text: #f5f3f0;
       --muted: #9998a2;
       --accent: #d4f36a;
       --line: rgba(255, 255, 255, .09);
-      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
@@ -75,17 +73,6 @@
       cursor: pointer;
     }
     .icon-button svg { width: 17px; height: 17px; }
-    .avatar {
-      width: 35px;
-      height: 35px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #cf9b73;
-      color: #23180f;
-      font-size: 12px;
-      font-weight: 700;
-    }
     .hero {
       position: relative;
       min-height: 425px;
@@ -169,7 +156,6 @@
     .button svg { width: 15px; height: 15px; }
     .button.secondary { border-color: rgba(255,255,255,.2); background: rgba(20,20,24,.42); color: white; }
     .button.secondary:hover { background: rgba(255,255,255,.12); }
-    .hero-note { margin: 14px 0 0 !important; color: #bbb5ba !important; font-size: 10px !important; }
     .section { padding-top: 49px; }
     .section-heading {
       display: flex;
@@ -180,6 +166,7 @@
     }
     .section-heading h2 { margin: 0; font: 700 21px Manrope, sans-serif; letter-spacing: -.5px; }
     .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .movie-controls { display: flex; flex-wrap: wrap; gap: 9px; }
     .search-wrap {
       width: min(310px, 100%);
       height: 42px;
@@ -195,6 +182,17 @@
     .search-wrap svg { width: 16px; height: 16px; flex: 0 0 auto; color: #8d8b96; }
     .search-wrap input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 12px; }
     .search-wrap input::placeholder { color: #777680; }
+    .year-select {
+      min-width: 126px;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #18181d;
+      color: var(--text);
+      font-size: 12px;
+    }
+    .year-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .filters { display: flex; gap: 8px; overflow-x: auto; padding: 1px 0 5px; scrollbar-width: none; }
     .filters::-webkit-scrollbar { display: none; }
     .filter {
@@ -211,6 +209,11 @@
     .filter:hover { border-color: #656570; color: white; }
     .filter.active { border-color: var(--accent); background: var(--accent); color: #171a0b; font-weight: 700; }
     .movie-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px 16px; margin-top: 18px; }
+    .download-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+    .download-card { display: flex; flex-direction: column; align-items: start; gap: 12px; padding: 18px; border: 1px solid var(--line); border-radius: 13px; background: var(--panel); }
+    .download-card h3 { margin: 0; font: 700 15px Manrope, sans-serif; }
+    .download-card p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .download-link { min-height: 38px; padding: 0 12px; font-size: 11px; }
     .movie-card { min-width: 0; }
     .poster {
       position: relative;
@@ -221,35 +224,20 @@
       padding: 16px;
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 13px;
+      background: var(--poster);
       isolation: isolate;
       transition: transform .2s, border-color .2s;
     }
+    .poster-image { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
     .poster::before {
       position: absolute;
       z-index: -1;
       inset: 0;
-      background:
-        linear-gradient(180deg, transparent 32%, rgba(0,0,0,.15) 50%, rgba(0,0,0,.88) 100%),
-        radial-gradient(ellipse at 62% 35%, rgba(255,255,255,.3), transparent 4%),
-        var(--poster);
+      background: linear-gradient(180deg, transparent 32%, rgba(0,0,0,.15) 50%, rgba(0,0,0,.88) 100%);
       content: "";
-      transition: transform .3s;
-    }
-    .poster::after {
-      position: absolute;
-      z-index: -1;
-      top: -19%;
-      left: 15%;
-      width: 70%;
-      height: 78%;
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 50% 50% 44% 44%;
-      background: linear-gradient(150deg, rgba(255,255,255,.14), transparent 60%);
-      content: "";
-      transform: rotate(-10deg);
     }
     .movie-card:hover .poster { transform: translateY(-4px); border-color: rgba(212,243,106,.55); }
-    .movie-card:hover .poster::before { transform: scale(1.04); }
+    .movie-card:hover .poster-image { transform: scale(1.04); }
     .poster-title { width: 100%; font: 800 clamp(15px, 1.8vw, 20px)/1.05 Manrope, sans-serif; letter-spacing: -.55px; text-shadow: 0 2px 12px #000; }
     .poster-label { display: block; margin-bottom: 6px; color: rgba(255,255,255,.78); font: 700 8px "DM Sans", sans-serif; letter-spacing: 2px; text-transform: uppercase; }
     .poster-tag {
@@ -265,8 +253,6 @@
       font-size: 9px;
       font-weight: 700;
     }
-    .poster-rating { position: absolute; top: 12px; right: 11px; display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; text-shadow: 0 1px 5px #000; }
-    .poster-rating svg { width: 12px; height: 12px; fill: #f4d678; color: #f4d678; }
     .movie-info { display: flex; align-items: start; justify-content: space-between; gap: 7px; padding: 11px 1px 0; }
     .movie-info h3 { overflow: hidden; margin: 0; font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
     .movie-info p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
@@ -277,6 +263,35 @@
     .find-link { display: inline-block; margin-top: 9px; color: var(--accent); font-size: 10px; font-weight: 600; }
     .find-link:hover { text-decoration: underline; }
     .empty-state { grid-column: 1/-1; padding: 44px 20px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); text-align: center; font-size: 13px; }
+    .results-footer { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 22px; color: var(--muted); font-size: 11px; }
+    .results-footer[hidden] { display: none; }
+    .results-footer .button { min-height: 38px; }
+    .movie-detail-view { padding: 36px 0 56px; }
+    .movie-detail-view[hidden] { display: none; }
+    .detail-back { margin-bottom: 22px; border: 0; background: transparent; color: var(--accent); font-size: 12px; cursor: pointer; }
+    .detail-back:hover { text-decoration: underline; }
+    .detail-layout { display: grid; grid-template-columns: minmax(220px, 320px) minmax(0, 1fr); gap: clamp(24px, 5vw, 58px); align-items: start; }
+    .detail-poster { position: sticky; top: 22px; width: 100%; aspect-ratio: 2 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); box-shadow: 0 18px 55px rgba(0,0,0,.3); }
+    .detail-poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .detail-copy { min-width: 0; }
+    .detail-copy h1 { margin: 0; font: 800 clamp(30px, 5vw, 54px)/1.05 Manrope, sans-serif; letter-spacing: -1.8px; }
+    .detail-meta { margin: 12px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .detail-copy h2 { margin: 26px 0 9px; font: 700 17px Manrope, sans-serif; }
+    .detail-overview { max-width: 700px; color: #c4c1cb; font-size: 14px; line-height: 1.75; }
+    .detail-link { display: inline-flex; margin-top: 6px; }
+    .detail-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+    .detail-fact, .provider-card { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+    .detail-fact strong, .detail-fact span { display: block; }
+    .detail-fact strong { margin-bottom: 6px; font-size: 11px; }
+    .detail-fact span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .detail-section-note { max-width: 700px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .provider-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 14px; }
+    .provider-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--text); font-size: 12px; font-weight: 600; }
+    .provider-card:hover { border-color: var(--accent); }
+    .provider-card span:last-child { color: var(--accent); font-size: 10px; white-space: nowrap; }
+    .detail-downloads { display: grid; gap: 10px; margin-top: 12px; }
+    .detail-downloads .download-card { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+    .detail-copyright-note { margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
     .legal-note {
       display: flex;
       align-items: start;
@@ -382,6 +397,7 @@
 
     @media (max-width: 900px) {
       .movie-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .download-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .nav { margin-left: 20px; gap: 19px; }
     }
     @media (max-width: 650px) {
@@ -391,15 +407,21 @@
       .top-actions { gap: 6px; }
       .account-button, .share-button { min-height: 35px; padding: 0 9px; font-size: 10px; }
       #focus-search { width: 35px; height: 35px; }
-      .avatar { display: none; }
       .hero { min-height: 400px; margin-top: 16px; padding: 31px 23px; }
       .hero::before { right: -42%; top: -10px; }
       .hero-art { right: -5%; }
       .hero h1 { letter-spacing: -1.8px; }
       .section { padding-top: 37px; }
       .section-heading { align-items: stretch; flex-direction: column; }
-      .search-wrap { width: 100%; }
+      .movie-controls { width: 100%; }
+      .search-wrap { flex: 1; width: auto; min-width: 0; }
+      .year-select { flex: 0 0 auto; }
       .movie-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 13px; }
+      .download-grid { grid-template-columns: 1fr; }
+      .detail-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+      .detail-poster { position: relative; top: auto; width: min(100%, 300px); margin-inline: auto; }
+      .detail-facts { grid-template-columns: minmax(0, 1fr); }
+      .detail-downloads .download-card { align-items: start; flex-direction: column; }
       .poster { height: clamp(225px, 66vw, 330px); }
       .poster-title { font-size: 18px; }
       .legal-note { margin: 35px 0 42px; }
@@ -413,11 +435,11 @@
 </head>
 <body>
   <header class="topbar shell">
-    <a class="brand" href="#" aria-label="FRAME home">
+    <a class="brand" href="#" aria-label="movies wizz home">
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16v10H4zM8 7V4m8 3V4M8 20v-3m8 3v-3M4 10H2m20 0h-2M4 14H2m20 0h-2"/></svg>
       </span>
-      FRAME
+      movies wizz
     </a>
     <nav class="nav" aria-label="Main navigation">
       <a class="active" href="#discover">Discover</a>
@@ -437,12 +459,13 @@
   </header>
 
   <main class="shell">
+    <div id="catalog-view">
     <section class="hero" id="discover" aria-labelledby="hero-title">
       <div class="hero-art" aria-hidden="true"></div>
       <div class="hero-copy">
         <span class="eyebrow">Spotlight pick · 2025</span>
         <h1 id="hero-title">Some nights change everything.</h1>
-        <p>A haunting Southern gothic where music, family, and the supernatural collide. Find official places to stream, rent, or buy Sinners.</p>
+        <p>A haunting Southern gothic where music, family, and the supernatural collide.</p>
         <div class="hero-meta">
           <span>2025</span><span aria-hidden="true">·</span><span>Drama</span><span aria-hidden="true">·</span>
           <span class="rating">
@@ -451,16 +474,11 @@
           </span>
         </div>
         <div class="hero-buttons">
-          <a class="button" href="https://www.justwatch.com/in/search?q=Sinners" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10-6.5z"/></svg>
-            Find where to watch
-          </a>
           <a class="button secondary" href="#movies">
             Explore movies
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
           </a>
         </div>
-        <p class="hero-note">Availability depends on your region and streaming subscriptions.</p>
       </div>
     </section>
 
@@ -468,12 +486,17 @@
       <div class="section-heading">
         <div>
           <h2>Fresh from the big screen</h2>
-          <p>Curated picks from Indian film industries and around the world. Search official options to stream, rent, or buy.</p>
+          <p>Curated picks from Indian film industries and around the world. Browse by year, language, and genre.</p>
         </div>
-        <label class="search-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
-          <input id="movie-search" type="search" placeholder="Search movies or genres..." autocomplete="off" aria-label="Search movies or genres">
-        </label>
+        <div class="movie-controls">
+          <label class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+            <input id="movie-search" type="search" placeholder="Search movies or genres..." autocomplete="off" aria-label="Search movies or genres">
+          </label>
+          <select class="year-select" id="year-filter" aria-label="Filter movies by year">
+            <option value="All">All years</option>
+          </select>
+        </div>
       </div>
       <div class="filters" role="group" aria-label="Filter movies by genre">
         <button class="filter active" data-genre="All">All movies</button>
@@ -485,6 +508,7 @@
         <button class="filter" data-genre="Comedy">Comedy</button>
         <button class="filter" data-genre="Thriller">Thriller</button>
         <button class="filter" data-genre="Romance">Romance</button>
+        <button class="filter" data-genre="Unclassified">Unclassified</button>
       </div>
       <p class="browse-label">Browse by cinema &amp; language</p>
       <div class="filters industry-filters" role="group" aria-label="Filter movies by film industry">
@@ -497,28 +521,87 @@
         <button class="filter" data-industry="Bengali">Bengali cinema</button>
         <button class="filter" data-industry="Marathi">Marathi cinema</button>
         <button class="filter" data-industry="Hollywood">Hollywood</button>
+        <button class="filter" data-industry="International">International</button>
       </div>
-      <div class="movie-grid" id="movie-grid" aria-live="polite"></div>
+      <div class="movie-grid" id="movie-grid"></div>
+      <div class="results-footer" id="results-footer">
+        <span id="results-count" role="status" aria-live="polite"></span>
+        <button class="button" id="load-more" type="button">Load more</button>
+      </div>
+    </section>
+
+    <section class="section" id="downloads" aria-labelledby="downloads-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="downloads-title">Public-domain classics</h2>
+          <p>Download these classic films from the Internet Archive. Public-domain status varies by country; check local rules before downloading.</p>
+        </div>
+      </div>
+      <div class="download-grid">
+        <article class="download-card">
+          <div><h3>His Girl Friday</h3><p>1940 · Comedy · MP4 · ~575 MB</p></div>
+          <a class="button download-link" href="https://archive.org/download/his_girl_friday/his_girl_friday.mp4?download=1">
+            Download MP4
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg>
+          </a>
+        </article>
+        <article class="download-card">
+          <div><h3>Charade</h3><p>1963 · Mystery · MP4 · ~659 MB</p></div>
+          <a class="button download-link" href="https://archive.org/download/charade_202604/Charade.ia.mp4?download=1">
+            Download MP4
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg>
+          </a>
+        </article>
+      </div>
     </section>
 
     <aside class="legal-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
-      <div><strong>Watch the right way.</strong> FRAME helps you discover movies and links you to official streaming search results. Availability, pricing, and offline-download options vary by service and location. This page does not host movie files.</div>
+      <div><strong>Discover movies.</strong> Browse titles, posters, and movie details. Public-domain status and download rights can vary by country; check local rules before downloading. Poster artwork remains the property of its respective rights holders.</div>
     </aside>
     <footer>
-      <span>© 2026 FRAME. Made for movie people.</span>
-      <span>Movie availability varies by region. <a href="https://www.justwatch.com/" target="_blank" rel="noopener noreferrer">Powered by your own search on JustWatch ↗</a></span>
+      <span>© 2026 movies wizz. Made for movie people.</span>
+      <span>Movie details and artwork are provided for discovery.</span>
     </footer>
+    </div>
+    <section class="movie-detail-view" id="movie-detail-view" hidden aria-labelledby="detail-title">
+      <button class="detail-back" id="detail-back" type="button">← Back to movies</button>
+      <div class="detail-layout">
+        <div class="detail-poster"><img id="detail-poster-image" alt=""></div>
+        <div class="detail-copy">
+          <span class="eyebrow">Movie details</span>
+          <h1 id="detail-title"></h1>
+          <p class="detail-meta" id="detail-meta"></p>
+          <div class="detail-facts" aria-label="Movie information">
+            <div class="detail-fact"><strong>Cast</strong><span id="detail-cast">Loading public movie data…</span><a class="find-link detail-link" id="detail-cast-source" target="_blank" rel="noopener noreferrer" hidden>Source ↗</a></div>
+            <div class="detail-fact"><strong>Rating</strong><span id="detail-rating">Loading public movie data…</span><a class="find-link detail-link" id="detail-rating-source" target="_blank" rel="noopener noreferrer" hidden></a></div>
+          </div>
+          <h2>About the movie</h2>
+          <p class="detail-overview" id="detail-overview" role="status">Loading movie details…</p>
+          <a class="find-link detail-link" id="detail-reference" target="_blank" rel="noopener noreferrer" hidden>Read more ↗</a>
+          <section aria-labelledby="detail-providers-title">
+            <h2 id="detail-providers-title">Check official viewing services</h2>
+            <p class="detail-section-note">Search these official services for this title. Results vary by country and subscription; a search link does not confirm that the movie is currently available there. TV broadcast schedules are not available in this catalog.</p>
+            <div class="provider-list" id="detail-providers"></div>
+          </section>
+          <div id="detail-download-section" hidden>
+            <h2>Legal download options</h2>
+            <div class="detail-downloads" id="detail-downloads"></div>
+            <p class="detail-copyright-note">These archival copies are offered as public-domain classics. Public-domain status and download rights can vary by country; check local rules before downloading.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-title">
     <div class="auth-content">
       <button class="auth-close" id="close-auth" type="button" aria-label="Close sign-in dialog">✕</button>
-      <a class="brand" href="#" aria-label="FRAME home">
+      <a class="brand" href="#" aria-label="movies wizz home">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16v10H4zM8 7V4m8 3V4M8 20v-3m8 3v-3M4 10H2m20 0h-2M4 14H2m20 0h-2"/></svg>
         </span>
-        FRAME
+        movies wizz
       </a>
       <h2 id="auth-title">Welcome back</h2>
       <p class="auth-description" id="auth-description">Sign in to keep your movie list close.</p>
@@ -537,13 +620,14 @@
         </label>
         <button class="button auth-submit" id="auth-submit" type="submit">Sign in</button>
       </form>
-      <p class="auth-toggle"><span id="auth-toggle-copy">New to FRAME?</span>
+      <p class="auth-toggle"><span id="auth-toggle-copy">New to movies wizz?</span>
         <button class="text-button" id="toggle-auth-mode" type="button">Create an account</button>
       </p>
       <p class="auth-footnote">Sign-in is a visual prototype only. No account is created and credentials are never sent or stored. Real accounts require a secure authentication service.</p>
     </div>
   </dialog>
 
+  <script type="application/json" id="movie-catalog-data">[{"title":"Anora","year":2024,"language":"English"},{"title":"The Brutalist","year":2024,"language":"English"},{"title":"Conclave","year":2024,"language":"English"},{"title":"Dune: Part Two","year":2024,"language":"English"},{"title":"The Substance","year":2024,"language":"English"},{"title":"Challengers","year":2024,"language":"English"},{"title":"Civil War","year":2024,"language":"English"},{"title":"Furiosa: A Mad Max Saga","year":2024,"language":"English"},{"title":"The Fall Guy","year":2024,"language":"English"},{"title":"Kingdom of the Planet of the Apes","year":2024,"language":"English"},{"title":"Alien: Romulus","year":2024,"language":"English"},{"title":"A Quiet Place: Day One","year":2024,"language":"English"},{"title":"Gladiator II","year":2024,"language":"English"},{"title":"Wicked","year":2024,"language":"English"},{"title":"Inside Out 2","year":2024,"language":"English"},{"title":"Deadpool & Wolverine","year":2024,"language":"English"},{"title":"Godzilla x Kong: The New Empire","year":2024,"language":"English"},{"title":"Oppenheimer","year":2023,"language":"English"},{"title":"Poor Things","year":2023,"language":"English"},{"title":"Killers of the Flower Moon","year":2023,"language":"English"},{"title":"The Holdovers","year":2023,"language":"English"},{"title":"Past Lives","year":2023,"language":"English"},{"title":"Barbie","year":2023,"language":"English"},{"title":"The Creator","year":2023,"language":"English"},{"title":"John Wick: Chapter 4","year":2023,"language":"English"},{"title":"Guardians of the Galaxy Vol. 3","year":2023,"language":"English"},{"title":"Mission: Impossible – Dead Reckoning Part One","year":2023,"language":"English"},{"title":"Spider-Man: Across the Spider-Verse","year":2023,"language":"English"},{"title":"The Killer","year":2023,"language":"English"},{"title":"Saltburn","year":2023,"language":"English"},{"title":"Air","year":2023,"language":"English"},{"title":"Everything Everywhere All at Once","year":2022,"language":"English"},{"title":"Top Gun: Maverick","year":2022,"language":"English"},{"title":"The Banshees of Inisherin","year":2022,"language":"English"},{"title":"The Fabelmans","year":2022,"language":"English"},{"title":"Tár","year":2022,"language":"English"},{"title":"Avatar: The Way of Water","year":2022,"language":"English"},{"title":"The Batman","year":2022,"language":"English"},{"title":"Elvis","year":2022,"language":"English"},{"title":"Nope","year":2022,"language":"English"},{"title":"The Power of the Dog","year":2021,"language":"English"},{"title":"Dune","year":2021,"language":"English"},{"title":"CODA","year":2021,"language":"English"},{"title":"The Father","year":2020,"language":"English"},{"title":"Nomadland","year":2020,"language":"English"},{"title":"1917","year":2019,"language":"English"},{"title":"Joker","year":2019,"language":"English"},{"title":"Once Upon a Time in Hollywood","year":2019,"language":"English"},{"title":"Ford v Ferrari","year":2019,"language":"English"},{"title":"Knives Out","year":2019,"language":"English"},{"title":"Marriage Story","year":2019,"language":"English"},{"title":"The Irishman","year":2019,"language":"English"},{"title":"Spider-Man: Into the Spider-Verse","year":2018,"language":"English"},{"title":"Get Out","year":2017,"language":"English"},{"title":"Moonlight","year":2016,"language":"English"},{"title":"La La Land","year":2016,"language":"English"},{"title":"Arrival","year":2016,"language":"English"},{"title":"Mad Max: Fury Road","year":2015,"language":"English"},{"title":"Whiplash","year":2014,"language":"English"},{"title":"Interstellar","year":2014,"language":"English"},{"title":"Birdman","year":2014,"language":"English"},{"title":"The Grand Budapest Hotel","year":2014,"language":"English"},{"title":"Her","year":2013,"language":"English"},{"title":"Gravity","year":2013,"language":"English"},{"title":"12 Years a Slave","year":2013,"language":"English"},{"title":"Inception","year":2010,"language":"English"},{"title":"The Social Network","year":2010,"language":"English"},{"title":"Black Swan","year":2010,"language":"English"},{"title":"Shutter Island","year":2010,"language":"English"},{"title":"The Dark Knight","year":2008,"language":"English"},{"title":"There Will Be Blood","year":2007,"language":"English"},{"title":"No Country for Old Men","year":2007,"language":"English"},{"title":"The Departed","year":2006,"language":"English"},{"title":"The Prestige","year":2006,"language":"English"},{"title":"Eternal Sunshine of the Spotless Mind","year":2004,"language":"English"},{"title":"The Lord of the Rings: The Return of the King","year":2003,"language":"English"},{"title":"The Lord of the Rings: The Two Towers","year":2002,"language":"English"},{"title":"The Lord of the Rings: The Fellowship of the Ring","year":2001,"language":"English"},{"title":"The Matrix","year":1999,"language":"English"},{"title":"Fight Club","year":1999,"language":"English"},{"title":"The Green Mile","year":1999,"language":"English"},{"title":"Saving Private Ryan","year":1998,"language":"English"},{"title":"The Truman Show","year":1998,"language":"English"},{"title":"Titanic","year":1997,"language":"English"},{"title":"Good Will Hunting","year":1997,"language":"English"},{"title":"The Shawshank Redemption","year":1994,"language":"English"},{"title":"Pulp Fiction","year":1994,"language":"English"},{"title":"Forrest Gump","year":1994,"language":"English"},{"title":"Schindler's List","year":1993,"language":"English"},{"title":"Jurassic Park","year":1993,"language":"English"},{"title":"The Silence of the Lambs","year":1991,"language":"English"},{"title":"Goodfellas","year":1990,"language":"English"},{"title":"Dead Poets Society","year":1989,"language":"English"},{"title":"The Godfather Part II","year":1974,"language":"English"},{"title":"The Godfather","year":1972,"language":"English"},{"title":"A Clockwork Orange","year":1971,"language":"English"},{"title":"2001: A Space Odyssey","year":1968,"language":"English"},{"title":"Psycho","year":1960,"language":"English"},{"title":"Vertigo","year":1958,"language":"English"},{"title":"12 Angry Men","year":1957,"language":"English"},{"title":"Chhaava","year":2025,"language":"Hindi"},{"title":"Stree 2","year":2024,"language":"Hindi"},{"title":"Laapataa Ladies","year":2024,"language":"Hindi"},{"title":"Article 370","year":2024,"language":"Hindi"},{"title":"Kill","year":2024,"language":"Hindi"},{"title":"Bhool Bhulaiyaa 3","year":2024,"language":"Hindi"},{"title":"Fighter","year":2024,"language":"Hindi"},{"title":"Crew","year":2024,"language":"Hindi"},{"title":"Maidaan","year":2024,"language":"Hindi"},{"title":"Munjya","year":2024,"language":"Hindi"},{"title":"Singham Again","year":2024,"language":"Hindi"},{"title":"The Sabarmati Report","year":2024,"language":"Hindi"},{"title":"Khel Khel Mein","year":2024,"language":"Hindi"},{"title":"Merry Christmas","year":2024,"language":"Hindi"},{"title":"Sector 36","year":2024,"language":"Hindi"},{"title":"Vicky Vidya Ka Woh Wala Video","year":2024,"language":"Hindi"},{"title":"Do Aur Do Pyaar","year":2024,"language":"Hindi"},{"title":"Jawan","year":2023,"language":"Hindi"},{"title":"Animal","year":2023,"language":"Hindi"},{"title":"Pathaan","year":2023,"language":"Hindi"},{"title":"Dunki","year":2023,"language":"Hindi"},{"title":"Rocky Aur Rani Kii Prem Kahaani","year":2023,"language":"Hindi"},{"title":"12th Fail","year":2023,"language":"Hindi"},{"title":"OMG 2","year":2023,"language":"Hindi"},{"title":"The Kerala Story","year":2023,"language":"Hindi"},{"title":"Bheed","year":2023,"language":"Hindi"},{"title":"Sirf Ek Bandaa Kaafi Hai","year":2023,"language":"Hindi"},{"title":"Kathal: A Jackfruit Mystery","year":2023,"language":"Hindi"},{"title":"Monica, O My Darling","year":2022,"language":"Hindi"},{"title":"Drishyam 2","year":2022,"language":"Hindi"},{"title":"Darlings","year":2022,"language":"Hindi"},{"title":"Badhaai Do","year":2022,"language":"Hindi"},{"title":"Qala","year":2022,"language":"Hindi"},{"title":"Sardar Ka Grandson","year":2021,"language":"Hindi"},{"title":"Mimi","year":2021,"language":"Hindi"},{"title":"Shershaah","year":2021,"language":"Hindi"},{"title":"Ludo","year":2020,"language":"Hindi"},{"title":"Bulbbul","year":2020,"language":"Hindi"},{"title":"Article 15","year":2019,"language":"Hindi"},{"title":"Gully Boy","year":2019,"language":"Hindi"},{"title":"Andhadhun","year":2018,"language":"Hindi"},{"title":"Tumbbad","year":2018,"language":"Hindi"},{"title":"Raazi","year":2018,"language":"Hindi"},{"title":"Newton","year":2017,"language":"Hindi"},{"title":"Hindi Medium","year":2017,"language":"Hindi"},{"title":"Dangal","year":2016,"language":"Hindi"},{"title":"Kapoor & Sons","year":2016,"language":"Hindi"},{"title":"M.S. Dhoni: The Untold Story","year":2016,"language":"Hindi"},{"title":"Queen","year":2013,"language":"Hindi"},{"title":"The Lunchbox","year":2013,"language":"Hindi"},{"title":"Kahaani","year":2012,"language":"Hindi"},{"title":"Gangs of Wasseypur","year":2012,"language":"Hindi"},{"title":"Barfi!","year":2012,"language":"Hindi"},{"title":"Rockstar","year":2011,"language":"Hindi"},{"title":"Zindagi Na Milegi Dobara","year":2011,"language":"Hindi"},{"title":"3 Idiots","year":2009,"language":"Hindi"},{"title":"Wake Up Sid","year":2009,"language":"Hindi"},{"title":"Taare Zameen Par","year":2007,"language":"Hindi"},{"title":"Rang De Basanti","year":2006,"language":"Hindi"},{"title":"Swades","year":2004,"language":"Hindi"},{"title":"Lagaan","year":2001,"language":"Hindi"},{"title":"Dil Chahta Hai","year":2001,"language":"Hindi"},{"title":"Dilwale Dulhania Le Jayenge","year":1995,"language":"Hindi"},{"title":"Andaz Apna Apna","year":1994,"language":"Hindi"},{"title":"Satya","year":1998,"language":"Hindi"},{"title":"Sholay","year":1975,"language":"Hindi"},{"title":"Deewaar","year":1975,"language":"Hindi"},{"title":"Anand","year":1971,"language":"Hindi"},{"title":"Mughal-e-Azam","year":1960,"language":"Hindi"},{"title":"Mother India","year":1957,"language":"Hindi"},{"title":"Coolie","year":2025,"language":"Tamil"},{"title":"Tourist Family","year":2025,"language":"Tamil"},{"title":"Dragon","year":2025,"language":"Tamil"},{"title":"Good Bad Ugly","year":2025,"language":"Tamil"},{"title":"Retro","year":2025,"language":"Tamil"},{"title":"Veera Dheera Sooran: Part 2","year":2025,"language":"Tamil"},{"title":"Vidaamuyarchi","year":2025,"language":"Tamil"},{"title":"Love Insurance Kompany","year":2025,"language":"Tamil"},{"title":"Dude","year":2025,"language":"Tamil"},{"title":"Kudumbasthan","year":2025,"language":"Tamil"},{"title":"Ace","year":2025,"language":"Tamil"},{"title":"Thug Life","year":2025,"language":"Tamil"},{"title":"Amaran","year":2024,"language":"Tamil"},{"title":"Maharaja","year":2024,"language":"Tamil"},{"title":"Raayan","year":2024,"language":"Tamil"},{"title":"GOAT","year":2024,"language":"Tamil"},{"title":"Lubber Pandhu","year":2024,"language":"Tamil"},{"title":"Kanguva","year":2024,"language":"Tamil"},{"title":"Aranmanai 4","year":2024,"language":"Tamil"},{"title":"Garudan","year":2024,"language":"Tamil"},{"title":"Vettaiyan","year":2024,"language":"Tamil"},{"title":"Captain Miller","year":2024,"language":"Tamil"},{"title":"Jailer","year":2023,"language":"Tamil"},{"title":"Leo","year":2023,"language":"Tamil"},{"title":"Viduthalai Part 1","year":2023,"language":"Tamil"},{"title":"Maamannan","year":2023,"language":"Tamil"},{"title":"Por Thozhil","year":2023,"language":"Tamil"},{"title":"Good Night","year":2023,"language":"Tamil"},{"title":"Chithha","year":2023,"language":"Tamil"},{"title":"Dada","year":2023,"language":"Tamil"},{"title":"Mark Antony","year":2023,"language":"Tamil"},{"title":"Parking","year":2023,"language":"Tamil"},{"title":"Vikram","year":2022,"language":"Tamil"},{"title":"Jai Bhim","year":2021,"language":"Tamil"},{"title":"Doctor","year":2021,"language":"Tamil"},{"title":"Master","year":2021,"language":"Tamil"},{"title":"Sarpatta Parambarai","year":2021,"language":"Tamil"},{"title":"Karnan","year":2021,"language":"Tamil"},{"title":"Maanaadu","year":2021,"language":"Tamil"},{"title":"Soorarai Pottru","year":2020,"language":"Tamil"},{"title":"Kaithi","year":2019,"language":"Tamil"},{"title":"Asuran","year":2019,"language":"Tamil"},{"title":"Super Deluxe","year":2019,"language":"Tamil"},{"title":"96","year":2018,"language":"Tamil"},{"title":"Vada Chennai","year":2018,"language":"Tamil"},{"title":"Pariyerum Perumal","year":2018,"language":"Tamil"},{"title":"Ratsasan","year":2018,"language":"Tamil"},{"title":"Vikram Vedha","year":2017,"language":"Tamil"},{"title":"Theeran Adhigaaram Ondru","year":2017,"language":"Tamil"},{"title":"Visaranai","year":2015,"language":"Tamil"},{"title":"Jigarthanda","year":2014,"language":"Tamil"},{"title":"Anbe Sivam","year":2003,"language":"Tamil"},{"title":"Pithamagan","year":2003,"language":"Tamil"},{"title":"Alaipayuthey","year":2000,"language":"Tamil"},{"title":"Iruvar","year":1997,"language":"Tamil"},{"title":"Indian","year":1996,"language":"Tamil"},{"title":"Baasha","year":1995,"language":"Tamil"},{"title":"Bombay","year":1995,"language":"Tamil"},{"title":"Thevar Magan","year":1992,"language":"Tamil"},{"title":"Nayakan","year":1987,"language":"Tamil"},{"title":"Mouna Ragam","year":1986,"language":"Tamil"},{"title":"Thalapathi","year":1991,"language":"Tamil"},{"title":"Moondram Pirai","year":1982,"language":"Tamil"},{"title":"HIT: The Third Case","year":2025,"language":"Telugu"},{"title":"Kuberaa","year":2025,"language":"Telugu"},{"title":"They Call Him OG","year":2025,"language":"Telugu"},{"title":"Goodachari 2","year":2025,"language":"Telugu"},{"title":"Mirai","year":2025,"language":"Telugu"},{"title":"MAD Square","year":2025,"language":"Telugu"},{"title":"Robinhood","year":2025,"language":"Telugu"},{"title":"Kingdom","year":2025,"language":"Telugu"},{"title":"Pushpa 2: The Rule","year":2024,"language":"Telugu"},{"title":"Kalki 2898 AD","year":2024,"language":"Telugu"},{"title":"Devara: Part 1","year":2024,"language":"Telugu"},{"title":"Hanu-Man","year":2024,"language":"Telugu"},{"title":"Lucky Baskhar","year":2024,"language":"Telugu"},{"title":"Saripodhaa Sanivaaram","year":2024,"language":"Telugu"},{"title":"Sita Ramam","year":2022,"language":"Telugu"},{"title":"Major","year":2022,"language":"Telugu"},{"title":"RRR","year":2022,"language":"Telugu"},{"title":"DJ Tillu","year":2022,"language":"Telugu"},{"title":"Virupaksha","year":2023,"language":"Telugu"},{"title":"Dasara","year":2023,"language":"Telugu"},{"title":"Balagam","year":2023,"language":"Telugu"},{"title":"Hi Nanna","year":2023,"language":"Telugu"},{"title":"Baby","year":2023,"language":"Telugu"},{"title":"Mahanati","year":2018,"language":"Telugu"},{"title":"Rangasthalam","year":2018,"language":"Telugu"},{"title":"Arjun Reddy","year":2017,"language":"Telugu"},{"title":"Baahubali: The Beginning","year":2015,"language":"Telugu"},{"title":"Baahubali 2: The Conclusion","year":2017,"language":"Telugu"},{"title":"Eega","year":2012,"language":"Telugu"},{"title":"Jersey","year":2019,"language":"Telugu"},{"title":"Goodachari","year":2018,"language":"Telugu"},{"title":"Evaru","year":2019,"language":"Telugu"},{"title":"C/o Kancharapalem","year":2018,"language":"Telugu"},{"title":"Pelli Choopulu","year":2016,"language":"Telugu"},{"title":"Kshanam","year":2016,"language":"Telugu"},{"title":"Pokiri","year":2006,"language":"Telugu"},{"title":"Athadu","year":2005,"language":"Telugu"},{"title":"Bommarillu","year":2006,"language":"Telugu"},{"title":"Siva","year":1989,"language":"Telugu"},{"title":"Sagara Sangamam","year":1983,"language":"Telugu"},{"title":"Sankarabharanam","year":1980,"language":"Telugu"},{"title":"Lokah Chapter 1: Chandra","year":2025,"language":"Malayalam"},{"title":"Thudarum","year":2025,"language":"Malayalam"},{"title":"Rekhachithram","year":2025,"language":"Malayalam"},{"title":"Narivetta","year":2025,"language":"Malayalam"},{"title":"L2: Empuraan","year":2025,"language":"Malayalam"},{"title":"Alappuzha Gymkhana","year":2025,"language":"Malayalam"},{"title":"Officer on Duty","year":2025,"language":"Malayalam"},{"title":"Bromance","year":2025,"language":"Malayalam"},{"title":"Ponman","year":2025,"language":"Malayalam"},{"title":"Padakkalam","year":2025,"language":"Malayalam"},{"title":"Tourist Family","year":2025,"language":"Malayalam"},{"title":"Premalu","year":2024,"language":"Malayalam"},{"title":"Aavesham","year":2024,"language":"Malayalam"},{"title":"Manjummel Boys","year":2024,"language":"Malayalam"},{"title":"Bramayugam","year":2024,"language":"Malayalam"},{"title":"Aattam","year":2024,"language":"Malayalam"},{"title":"Ullozhukku","year":2024,"language":"Malayalam"},{"title":"Kishkindha Kaandam","year":2024,"language":"Malayalam"},{"title":"ARM","year":2024,"language":"Malayalam"},{"title":"RDX: Robert Dony Xavier","year":2023,"language":"Malayalam"},{"title":"Romancham","year":2023,"language":"Malayalam"},{"title":"Kannur Squad","year":2023,"language":"Malayalam"},{"title":"Kaathal – The Core","year":2023,"language":"Malayalam"},{"title":"2018","year":2023,"language":"Malayalam"},{"title":"Nanpakal Nerathu Mayakkam","year":2023,"language":"Malayalam"},{"title":"Jaya Jaya Jaya Jaya Hey","year":2022,"language":"Malayalam"},{"title":"Thallumaala","year":2022,"language":"Malayalam"},{"title":"Nna Thaan Case Kodu","year":2022,"language":"Malayalam"},{"title":"Mukundan Unni Associates","year":2022,"language":"Malayalam"},{"title":"Bhoothakaalam","year":2022,"language":"Malayalam"},{"title":"Minnal Murali","year":2021,"language":"Malayalam"},{"title":"Home","year":2021,"language":"Malayalam"},{"title":"Joji","year":2021,"language":"Malayalam"},{"title":"Nayattu","year":2021,"language":"Malayalam"},{"title":"The Great Indian Kitchen","year":2021,"language":"Malayalam"},{"title":"Ayyappanum Koshiyum","year":2020,"language":"Malayalam"},{"title":"Trance","year":2020,"language":"Malayalam"},{"title":"Kumbalangi Nights","year":2019,"language":"Malayalam"},{"title":"Virus","year":2019,"language":"Malayalam"},{"title":"Lucifer","year":2019,"language":"Malayalam"},{"title":"Uyare","year":2019,"language":"Malayalam"},{"title":"Angamaly Diaries","year":2017,"language":"Malayalam"},{"title":"Maheshinte Prathikaaram","year":2016,"language":"Malayalam"},{"title":"Premam","year":2015,"language":"Malayalam"},{"title":"Bangalore Days","year":2014,"language":"Malayalam"},{"title":"Drishyam","year":2013,"language":"Malayalam"},{"title":"Ustad Hotel","year":2012,"language":"Malayalam"},{"title":"Traffic","year":2011,"language":"Malayalam"},{"title":"Manichitrathazhu","year":1993,"language":"Malayalam"},{"title":"Devasuram","year":1993,"language":"Malayalam"},{"title":"Spadikam","year":1995,"language":"Malayalam"},{"title":"Kireedam","year":1989,"language":"Malayalam"},{"title":"Thoovanathumbikal","year":1987,"language":"Malayalam"},{"title":"KGF: Chapter 2","year":2022,"language":"Kannada"},{"title":"Kantara","year":2022,"language":"Kannada"},{"title":"777 Charlie","year":2022,"language":"Kannada"},{"title":"Sapta Sagaradaache Ello","year":2023,"language":"Kannada"},{"title":"Sapta Sagaradaache Ello – Side A","year":2023,"language":"Kannada"},{"title":"Sapta Sagaradaache Ello – Side B","year":2023,"language":"Kannada"},{"title":"Kaatera","year":2023,"language":"Kannada"},{"title":"Toby","year":2023,"language":"Kannada"},{"title":"Kotee","year":2024,"language":"Kannada"},{"title":"Blink","year":2024,"language":"Kannada"},{"title":"Shakhahaari","year":2024,"language":"Kannada"},{"title":"Laughing Buddha","year":2024,"language":"Kannada"},{"title":"Garuda Gamana Vrishabha Vahana","year":2021,"language":"Kannada"},{"title":"Love Mocktail","year":2020,"language":"Kannada"},{"title":"Avane Srimannarayana","year":2019,"language":"Kannada"},{"title":"KGF: Chapter 1","year":2018,"language":"Kannada"},{"title":"Tagaru","year":2018,"language":"Kannada"},{"title":"Mufti","year":2017,"language":"Kannada"},{"title":"Kirik Party","year":2016,"language":"Kannada"},{"title":"U-Turn","year":2016,"language":"Kannada"},{"title":"Lucia","year":2013,"language":"Kannada"},{"title":"Ulidavaru Kandanthe","year":2014,"language":"Kannada"},{"title":"Rangitaranga","year":2015,"language":"Kannada"},{"title":"Kavaludaari","year":2019,"language":"Kannada"},{"title":"Thithi","year":2015,"language":"Kannada"},{"title":"Godhi Banna Sadharana Mykattu","year":2016,"language":"Kannada"},{"title":"Rama Rama Re","year":2016,"language":"Kannada"},{"title":"Mungaru Male","year":2006,"language":"Kannada"},{"title":"Duniya","year":2007,"language":"Kannada"},{"title":"Om","year":1995,"language":"Kannada"},{"title":"Upendra","year":1999,"language":"Kannada"},{"title":"Gaalipata","year":2008,"language":"Kannada"},{"title":"Exhuma","year":2024,"language":"Korean"},{"title":"12.12: The Day","year":2023,"language":"Korean"},{"title":"The Roundup: Punishment","year":2024,"language":"Korean"},{"title":"The Roundup: No Way Out","year":2023,"language":"Korean"},{"title":"The Roundup","year":2022,"language":"Korean"},{"title":"Concrete Utopia","year":2023,"language":"Korean"},{"title":"Decision to Leave","year":2022,"language":"Korean"},{"title":"Broker","year":2022,"language":"Korean"},{"title":"Hunt","year":2022,"language":"Korean"},{"title":"Parasite","year":2019,"language":"Korean"},{"title":"Burning","year":2018,"language":"Korean"},{"title":"Train to Busan","year":2016,"language":"Korean"},{"title":"The Handmaiden","year":2016,"language":"Korean"},{"title":"The Wailing","year":2016,"language":"Korean"},{"title":"A Taxi Driver","year":2017,"language":"Korean"},{"title":"The Attorney","year":2013,"language":"Korean"},{"title":"Memories of Murder","year":2003,"language":"Korean"},{"title":"Oldboy","year":2003,"language":"Korean"},{"title":"I Saw the Devil","year":2010,"language":"Korean"},{"title":"The Host","year":2006,"language":"Korean"},{"title":"Mother","year":2009,"language":"Korean"},{"title":"Minari","year":2020,"language":"Korean"},{"title":"Little Forest","year":2018,"language":"Korean"},{"title":"Extreme Job","year":2019,"language":"Korean"},{"title":"New World","year":2013,"language":"Korean"},{"title":"The Chaser","year":2008,"language":"Korean"},{"title":"The Man from Nowhere","year":2010,"language":"Korean"},{"title":"Silenced","year":2011,"language":"Korean"},{"title":"Poetry","year":2010,"language":"Korean"},{"title":"A Bittersweet Life","year":2005,"language":"Korean"},{"title":"The Yellow Sea","year":2010,"language":"Korean"},{"title":"Joint Security Area","year":2000,"language":"Korean"},{"title":"Spring, Summer, Fall, Winter... and Spring","year":2003,"language":"Korean"},{"title":"The King and the Clown","year":2005,"language":"Korean"},{"title":"Oasis","year":2002,"language":"Korean"},{"title":"Secret Sunshine","year":2007,"language":"Korean"},{"title":"The Call","year":2020,"language":"Korean"},{"title":"Forgotten","year":2017,"language":"Korean"},{"title":"A Hard Day","year":2014,"language":"Korean"},{"title":"Midnight","year":2021,"language":"Korean"},{"title":"Demon Slayer: Kimetsu no Yaiba – Infinity Castle","year":2025,"language":"Japanese"},{"title":"Godzilla Minus One","year":2023,"language":"Japanese"},{"title":"Perfect Days","year":2023,"language":"Japanese"},{"title":"Monster","year":2023,"language":"Japanese"},{"title":"The Boy and the Heron","year":2023,"language":"Japanese"},{"title":"Suzume","year":2022,"language":"Japanese"},{"title":"Drive My Car","year":2021,"language":"Japanese"},{"title":"Weathering with You","year":2019,"language":"Japanese"},{"title":"Shoplifters","year":2018,"language":"Japanese"},{"title":"One Cut of the Dead","year":2017,"language":"Japanese"},{"title":"Your Name.","year":2016,"language":"Japanese"},{"title":"Shin Godzilla","year":2016,"language":"Japanese"},{"title":"Our Little Sister","year":2015,"language":"Japanese"},{"title":"The Wind Rises","year":2013,"language":"Japanese"},{"title":"Like Father, Like Son","year":2013,"language":"Japanese"},{"title":"Wolf Children","year":2012,"language":"Japanese"},{"title":"Paprika","year":2006,"language":"Japanese"},{"title":"Spirited Away","year":2001,"language":"Japanese"},{"title":"Princess Mononoke","year":1997,"language":"Japanese"},{"title":"Perfect Blue","year":1997,"language":"Japanese"},{"title":"Ghost in the Shell","year":1995,"language":"Japanese"},{"title":"My Neighbor Totoro","year":1988,"language":"Japanese"},{"title":"Akira","year":1988,"language":"Japanese"},{"title":"Grave of the Fireflies","year":1988,"language":"Japanese"},{"title":"Seven Samurai","year":1954,"language":"Japanese"},{"title":"Rashomon","year":1950,"language":"Japanese"},{"title":"Tokyo Story","year":1953,"language":"Japanese"},{"title":"Harakiri","year":1962,"language":"Japanese"},{"title":"Yojimbo","year":1961,"language":"Japanese"},{"title":"Ran","year":1985,"language":"Japanese"},{"title":"Battle Royale","year":2000,"language":"Japanese"},{"title":"Audition","year":1999,"language":"Japanese"},{"title":"Cure","year":1997,"language":"Japanese"},{"title":"Tampopo","year":1985,"language":"Japanese"},{"title":"After Life","year":1998,"language":"Japanese"},{"title":"Ne Zha 2","year":2025,"language":"Mandarin"},{"title":"Creation of the Gods II: Demon Force","year":2025,"language":"Mandarin"},{"title":"Creation of the Gods I: Kingdom of Storms","year":2023,"language":"Mandarin"},{"title":"The Wandering Earth 2","year":2023,"language":"Mandarin"},{"title":"Full River Red","year":2023,"language":"Mandarin"},{"title":"Lost in the Stars","year":2023,"language":"Mandarin"},{"title":"YOLO","year":2024,"language":"Mandarin"},{"title":"Article 20","year":2024,"language":"Mandarin"},{"title":"The Wandering Earth","year":2019,"language":"Mandarin"},{"title":"Ne Zha","year":2019,"language":"Mandarin"},{"title":"The Eight Hundred","year":2020,"language":"Mandarin"},{"title":"Hi, Mom","year":2021,"language":"Mandarin"},{"title":"Better Days","year":2019,"language":"Mandarin"},{"title":"Wolf Warrior 2","year":2017,"language":"Mandarin"},{"title":"Operation Red Sea","year":2018,"language":"Mandarin"},{"title":"Farewell My Concubine","year":1993,"language":"Mandarin"},{"title":"Raise the Red Lantern","year":1991,"language":"Mandarin"},{"title":"To Live","year":1994,"language":"Mandarin"},{"title":"Hero","year":2002,"language":"Mandarin"},{"title":"House of Flying Daggers","year":2004,"language":"Mandarin"},{"title":"Crouching Tiger, Hidden Dragon","year":2000,"language":"Mandarin"},{"title":"The Farewell","year":2019,"language":"Mandarin"},{"title":"Yi Yi","year":2000,"language":"Mandarin"},{"title":"A Brighter Summer Day","year":1991,"language":"Mandarin"},{"title":"In the Mood for Love","year":2000,"language":"Cantonese"},{"title":"Infernal Affairs","year":2002,"language":"Cantonese"},{"title":"Chungking Express","year":1994,"language":"Cantonese"},{"title":"Fallen Angels","year":1995,"language":"Cantonese"},{"title":"Police Story","year":1985,"language":"Cantonese"},{"title":"Police Story 3: Super Cop","year":1992,"language":"Cantonese"},{"title":"Drunken Master","year":1978,"language":"Cantonese"},{"title":"Ip Man","year":2008,"language":"Cantonese"},{"title":"Ip Man 2","year":2010,"language":"Cantonese"},{"title":"Ip Man 4: The Finale","year":2019,"language":"Cantonese"},{"title":"A Better Tomorrow","year":1986,"language":"Cantonese"},{"title":"Hard Boiled","year":1992,"language":"Cantonese"},{"title":"Election","year":2005,"language":"Cantonese"},{"title":"Election 2","year":2006,"language":"Cantonese"},{"title":"The Killer","year":1989,"language":"Cantonese"},{"title":"Happy Together","year":1997,"language":"Cantonese"},{"title":"2046","year":2004,"language":"Cantonese"},{"title":"Shaolin Soccer","year":2001,"language":"Cantonese"},{"title":"Kung Fu Hustle","year":2004,"language":"Cantonese"},{"title":"Anatomy of a Fall","year":2023,"language":"French"},{"title":"The Count of Monte Cristo","year":2024,"language":"French"},{"title":"Emilia Perez","year":2024,"language":"French"},{"title":"The Taste of Things","year":2023,"language":"French"},{"title":"The Three Musketeers: D'Artagnan","year":2023,"language":"French"},{"title":"Saint Omer","year":2022,"language":"French"},{"title":"The Innocent","year":2022,"language":"French"},{"title":"Petite Maman","year":2021,"language":"French"},{"title":"Titane","year":2021,"language":"French"},{"title":"Portrait of a Lady on Fire","year":2019,"language":"French"},{"title":"Les Misérables","year":2019,"language":"French"},{"title":"The Intouchables","year":2011,"language":"French"},{"title":"Amélie","year":2001,"language":"French"},{"title":"The Artist","year":2011,"language":"French"},{"title":"Blue Is the Warmest Colour","year":2013,"language":"French"},{"title":"A Prophet","year":2009,"language":"French"},{"title":"La Haine","year":1995,"language":"French"},{"title":"The 400 Blows","year":1959,"language":"French"},{"title":"Breathless","year":1960,"language":"French"},{"title":"Cleo from 5 to 7","year":1962,"language":"French"},{"title":"PlayTime","year":1967,"language":"French"},{"title":"The Umbrellas of Cherbourg","year":1964,"language":"French"},{"title":"Society of the Snow","year":2023,"language":"Spanish"},{"title":"The Beasts","year":2022,"language":"Spanish"},{"title":"The Platform","year":2019,"language":"Spanish"},{"title":"Parallel Mothers","year":2021,"language":"Spanish"},{"title":"Pain and Glory","year":2019,"language":"Spanish"},{"title":"The Invisible Guest","year":2016,"language":"Spanish"},{"title":"Wild Tales","year":2014,"language":"Spanish"},{"title":"The Secret in Their Eyes","year":2009,"language":"Spanish"},{"title":"Roma","year":2018,"language":"Spanish"},{"title":"Guillermo del Toro's Pinocchio","year":2022,"language":"Spanish"},{"title":"Tigers Are Not Afraid","year":2017,"language":"Spanish"},{"title":"Pan's Labyrinth","year":2006,"language":"Spanish"},{"title":"The Orphanage","year":2007,"language":"Spanish"},{"title":"Biutiful","year":2010,"language":"Spanish"},{"title":"All About My Mother","year":1999,"language":"Spanish"},{"title":"Talk to Her","year":2002,"language":"Spanish"},{"title":"Volver","year":2006,"language":"Spanish"},{"title":"The Sea Inside","year":2004,"language":"Spanish"},{"title":"Open Your Eyes","year":1997,"language":"Spanish"},{"title":"The Skin I Live In","year":2011,"language":"Spanish"},{"title":"The Others","year":2001,"language":"Spanish"},{"title":"Marshland","year":2014,"language":"Spanish"},{"title":"Cell 211","year":2009,"language":"Spanish"},{"title":"The Platform 2","year":2024,"language":"Spanish"},{"title":"God's Crooked Lines","year":2022,"language":"Spanish"},{"title":"All Quiet on the Western Front","year":2022,"language":"German"},{"title":"The Lives of Others","year":2006,"language":"German"},{"title":"Good Bye Lenin!","year":2003,"language":"German"},{"title":"Run Lola Run","year":1998,"language":"German"},{"title":"Toni Erdmann","year":2016,"language":"German"},{"title":"The White Ribbon","year":2009,"language":"German"},{"title":"Phoenix","year":2014,"language":"German"},{"title":"Downfall","year":2004,"language":"German"},{"title":"Wings of Desire","year":1987,"language":"German"},{"title":"The Tin Drum","year":1979,"language":"German"},{"title":"Victoria","year":2015,"language":"German"},{"title":"System Crasher","year":2019,"language":"German"},{"title":"The Teachers' Lounge","year":2023,"language":"German"},{"title":"Metropolis","year":1927,"language":"German"},{"title":"M","year":1931,"language":"German"},{"title":"Nosferatu","year":1922,"language":"German"},{"title":"The Cabinet of Dr. Caligari","year":1920,"language":"German"},{"title":"La Chimera","year":2023,"language":"Italian"},{"title":"The Eight Mountains","year":2022,"language":"Italian"},{"title":"The Hand of God","year":2021,"language":"Italian"},{"title":"Martin Eden","year":2019,"language":"Italian"},{"title":"The Traitor","year":2019,"language":"Italian"},{"title":"Dogman","year":2018,"language":"Italian"},{"title":"Call Me by Your Name","year":2017,"language":"Italian"},{"title":"Youth","year":2015,"language":"Italian"},{"title":"The Great Beauty","year":2013,"language":"Italian"},{"title":"Gomorrah","year":2008,"language":"Italian"},{"title":"Life Is Beautiful","year":1997,"language":"Italian"},{"title":"Cinema Paradiso","year":1988,"language":"Italian"},{"title":"The Leopard","year":1963,"language":"Italian"},{"title":"8½","year":1963,"language":"Italian"},{"title":"Bicycle Thieves","year":1948,"language":"Italian"},{"title":"La Dolce Vita","year":1960,"language":"Italian"},{"title":"Rocco and His Brothers","year":1960,"language":"Italian"},{"title":"Suspiria","year":1977,"language":"Italian"},{"title":"Another Round","year":2020,"language":"Danish"},{"title":"The Hunt","year":2012,"language":"Danish"},{"title":"The Guilty","year":2018,"language":"Danish"},{"title":"Riders of Justice","year":2020,"language":"Danish"},{"title":"A Royal Affair","year":2012,"language":"Danish"},{"title":"The Square","year":2017,"language":"Swedish"},{"title":"Let the Right One In","year":2008,"language":"Swedish"},{"title":"Force Majeure","year":2014,"language":"Swedish"},{"title":"The Worst Person in the World","year":2021,"language":"Norwegian"},{"title":"Thelma","year":2017,"language":"Norwegian"},{"title":"A Man Called Ove","year":2015,"language":"Swedish"},{"title":"The Girl with the Dragon Tattoo","year":2009,"language":"Swedish"},{"title":"The Seed of the Sacred Fig","year":2024,"language":"Persian"},{"title":"A Hero","year":2021,"language":"Persian"},{"title":"The Salesman","year":2016,"language":"Persian"},{"title":"A Separation","year":2011,"language":"Persian"},{"title":"The Past","year":2013,"language":"Persian"},{"title":"About Elly","year":2009,"language":"Persian"},{"title":"Children of Heaven","year":1997,"language":"Persian"},{"title":"Taste of Cherry","year":1997,"language":"Persian"},{"title":"The Song of Sparrows","year":2008,"language":"Persian"},{"title":"No Bears","year":2022,"language":"Persian"},{"title":"The Cow","year":1969,"language":"Persian"},{"title":"Theeb","year":2014,"language":"Arabic"},{"title":"The Insult","year":2017,"language":"Arabic"},{"title":"Capernaum","year":2018,"language":"Arabic"},{"title":"The Man Who Sold His Skin","year":2020,"language":"Arabic"},{"title":"The Blue Elephant","year":2014,"language":"Arabic"},{"title":"Wadjda","year":2012,"language":"Arabic"},{"title":"The Yacoubian Building","year":2006,"language":"Arabic"},{"title":"Omar","year":2013,"language":"Arabic"},{"title":"The Message","year":1976,"language":"Arabic"},{"title":"The Battle of Algiers","year":1966,"language":"Arabic"},{"title":"Timbuktu","year":2014,"language":"Arabic"},{"title":"You Will Die at Twenty","year":2019,"language":"Arabic"},{"title":"Papicha","year":2019,"language":"Arabic"},{"title":"Winter Sleep","year":2014,"language":"Turkish"},{"title":"Once Upon a Time in Anatolia","year":2011,"language":"Turkish"},{"title":"The Wild Pear Tree","year":2018,"language":"Turkish"},{"title":"About Dry Grasses","year":2023,"language":"Turkish"},{"title":"Burning Days","year":2022,"language":"Turkish"},{"title":"Mustang","year":2015,"language":"Turkish"},{"title":"Ayla: The Daughter of War","year":2017,"language":"Turkish"},{"title":"The Butterfly's Dream","year":2013,"language":"Turkish"},{"title":"Head-On","year":2004,"language":"Turkish"},{"title":"Uzak","year":2002,"language":"Turkish"},{"title":"Three Monkeys","year":2008,"language":"Turkish"},{"title":"The Bandit","year":1996,"language":"Turkish"},{"title":"The Shadow Strays","year":2024,"language":"Indonesian"},{"title":"Impetigore","year":2019,"language":"Indonesian"},{"title":"The Night Comes for Us","year":2018,"language":"Indonesian"},{"title":"The Raid","year":2011,"language":"Indonesian"},{"title":"The Raid 2","year":2014,"language":"Indonesian"},{"title":"Photocopier","year":2021,"language":"Indonesian"},{"title":"Yuni","year":2021,"language":"Indonesian"},{"title":"Ngeri-Ngeri Sedap","year":2022,"language":"Indonesian"},{"title":"Satan's Slaves","year":2017,"language":"Indonesian"},{"title":"The Big 4","year":2022,"language":"Indonesian"},{"title":"How to Make Millions Before Grandma Dies","year":2024,"language":"Thai"},{"title":"Hunger","year":2023,"language":"Thai"},{"title":"The Medium","year":2021,"language":"Thai"},{"title":"Bad Genius","year":2017,"language":"Thai"},{"title":"Happy Old Year","year":2019,"language":"Thai"},{"title":"One Day","year":2016,"language":"Thai"},{"title":"Friend Zone","year":2019,"language":"Thai"},{"title":"Pee Mak","year":2013,"language":"Thai"},{"title":"Uncle Boonmee Who Can Recall His Past Lives","year":2010,"language":"Thai"},{"title":"Shutter","year":2004,"language":"Thai"},{"title":"Ong-Bak: The Thai Warrior","year":2003,"language":"Thai"},{"title":"The Teacher's Diary","year":2014,"language":"Thai"},{"title":"Hello, Love, Goodbye","year":2019,"language":"Filipino"},{"title":"The Hows of Us","year":2018,"language":"Filipino"},{"title":"Rewind","year":2023,"language":"Filipino"},{"title":"On the Job","year":2013,"language":"Filipino"},{"title":"Heneral Luna","year":2015,"language":"Filipino"},{"title":"A Very Good Girl","year":2023,"language":"Filipino"},{"title":"Die Beautiful","year":2016,"language":"Filipino"},{"title":"Fan Girl","year":2020,"language":"Filipino"},{"title":"Goyo: The Boy General","year":2018,"language":"Filipino"},{"title":"Birdshot","year":2016,"language":"Filipino"},{"title":"Transit","year":2013,"language":"Filipino"},{"title":"Norte, the End of History","year":2013,"language":"Filipino"},{"title":"The Woman Who Left","year":2016,"language":"Filipino"},{"title":"Insiang","year":1976,"language":"Filipino"},{"title":"Chaal Jeevi Laiye!","year":2019,"language":"Gujarati"},{"title":"Hellaro","year":2019,"language":"Gujarati"},{"title":"Reva","year":2018,"language":"Gujarati"},{"title":"Chhello Divas","year":2015,"language":"Gujarati"},{"title":"Wrong Side Raju","year":2016,"language":"Gujarati"},{"title":"Dhunki","year":2019,"language":"Gujarati"},{"title":"21mu Tiffin","year":2021,"language":"Gujarati"},{"title":"Vash","year":2023,"language":"Gujarati"},{"title":"Raado","year":2022,"language":"Gujarati"},{"title":"Fakt Mahilao Maate","year":2022,"language":"Gujarati"},{"title":"Chello Show","year":2021,"language":"Gujarati"},{"title":"Bushirt T-shirt","year":2023,"language":"Gujarati"},{"title":"Aamis","year":2019,"language":"Assamese"},{"title":"Kothanodi","year":2015,"language":"Assamese"},{"title":"Village Rockstars","year":2017,"language":"Assamese"},{"title":"Bulbul Can Sing","year":2018,"language":"Assamese"},{"title":"Mission China","year":2017,"language":"Assamese"},{"title":"Halodhia Choraye Baodhan Khai","year":1987,"language":"Assamese"},{"title":"Anur","year":2009,"language":"Assamese"},{"title":"Kahibaku Nai","year":2017,"language":"Odia"},{"title":"Daman","year":2001,"language":"Odia"},{"title":"Dhauli Express","year":2015,"language":"Odia"},{"title":"Hello Arsi","year":2018,"language":"Odia"},{"title":"Sala Budha","year":2012,"language":"Odia"},{"title":"Pheria","year":1988,"language":"Odia"},{"title":"Pratikshya","year":2022,"language":"Odia"},{"title":"Pushkara","year":2023,"language":"Odia"},{"title":"Adim Vichar","year":2014,"language":"Odia"},{"title":"Matira Bandhana","year":1963,"language":"Odia"},{"title":"Court","year":2014,"language":"Marathi"},{"title":"Sairat","year":2016,"language":"Marathi"},{"title":"Natsamrat","year":2016,"language":"Marathi"},{"title":"Killa","year":2014,"language":"Marathi"},{"title":"Aatmapamphlet","year":2023,"language":"Marathi"},{"title":"Baipan Bhari Deva","year":2023,"language":"Marathi"},{"title":"Jhimma","year":2021,"language":"Marathi"},{"title":"Vaalvi","year":2023,"language":"Marathi"},{"title":"Ani... Dr. Kashinath Ghanekar","year":2018,"language":"Marathi"},{"title":"Faster Fene","year":2017,"language":"Marathi"},{"title":"Shala","year":2011,"language":"Marathi"},{"title":"Harishchandrachi Factory","year":2009,"language":"Marathi"},{"title":"Katyar Kaljat Ghusali","year":2015,"language":"Marathi"},{"title":"Natrang","year":2010,"language":"Marathi"},{"title":"Deool","year":2011,"language":"Marathi"},{"title":"Duniyadari","year":2013,"language":"Marathi"},{"title":"Timepass","year":2014,"language":"Marathi"},{"title":"Ventilator","year":2016,"language":"Marathi"},{"title":"Mulshi Pattern","year":2018,"language":"Marathi"},{"title":"Pawankhind","year":2022,"language":"Marathi"},{"title":"Carry on Jatta 3","year":2023,"language":"Punjabi"},{"title":"Mastaney","year":2023,"language":"Punjabi"},{"title":"Carry on Jatta 2","year":2018,"language":"Punjabi"},{"title":"Chal Mera Putt","year":2019,"language":"Punjabi"},{"title":"Chal Mera Putt 2","year":2020,"language":"Punjabi"},{"title":"Chal Mera Putt 3","year":2021,"language":"Punjabi"},{"title":"Shadaa","year":2019,"language":"Punjabi"},{"title":"Qismat","year":2018,"language":"Punjabi"},{"title":"Qismat 2","year":2021,"language":"Punjabi"},{"title":"Sufna","year":2020,"language":"Punjabi"},{"title":"Angrej","year":2015,"language":"Punjabi"},{"title":"Punjab 1984","year":2014,"language":"Punjabi"},{"title":"Chauthi Koot","year":2015,"language":"Punjabi"},{"title":"Ardaas","year":2016,"language":"Punjabi"},{"title":"Ardaas Karaan","year":2019,"language":"Punjabi"},{"title":"Bambukat","year":2016,"language":"Punjabi"},{"title":"Nikka Zaildar","year":2016,"language":"Punjabi"},{"title":"Nikka Zaildar 2","year":2017,"language":"Punjabi"},{"title":"Sardaar Ji","year":2015,"language":"Punjabi"},{"title":"Sardaar Ji 2","year":2016,"language":"Punjabi"},{"title":"Manje Bistre","year":2017,"language":"Punjabi"},{"title":"Lahoriye","year":2017,"language":"Punjabi"},{"title":"Rabb Da Radio","year":2017,"language":"Punjabi"},{"title":"Honsla Rakh","year":2021,"language":"Punjabi"},{"title":"Jatt & Juliet","year":2012,"language":"Punjabi"},{"title":"Jatt & Juliet 2","year":2013,"language":"Punjabi"},{"title":"Super Singh","year":2017,"language":"Punjabi"},{"title":"Babe Bhangra Paunde Ne","year":2022,"language":"Punjabi"},{"title":"Maurh","year":2023,"language":"Punjabi"},{"title":"Belashuru","year":2022,"language":"Bengali"},{"title":"Raktabeej","year":2023,"language":"Bengali"},{"title":"Dostojee","year":2021,"language":"Bengali"},{"title":"Aparajito","year":2022,"language":"Bengali"},{"title":"Kaberi Antardhan","year":2023,"language":"Bengali"},{"title":"Vinci Da","year":2019,"language":"Bengali"},{"title":"Dracula Sir","year":2020,"language":"Bengali"},{"title":"Jaatishwar","year":2014,"language":"Bengali"},{"title":"Praktan","year":2016,"language":"Bengali"},{"title":"Bela Sheshe","year":2015,"language":"Bengali"},{"title":"Chotushkone","year":2014,"language":"Bengali"},{"title":"Bhooter Bhabishyat","year":2012,"language":"Bengali"},{"title":"Autograph","year":2010,"language":"Bengali"},{"title":"Chokher Bali","year":2003,"language":"Bengali"},{"title":"Antaheen","year":2008,"language":"Bengali"},{"title":"Nayak: The Hero","year":1966,"language":"Bengali"},{"title":"Charulata","year":1964,"language":"Bengali"},{"title":"Mahanagar","year":1963,"language":"Bengali"},{"title":"Pather Panchali","year":1955,"language":"Bengali"},{"title":"Aparajito","year":1956,"language":"Bengali"},{"title":"Jalsaghar","year":1958,"language":"Bengali"},{"title":"Sonar Kella","year":1974,"language":"Bengali"},{"title":"Hirak Rajar Deshe","year":1980,"language":"Bengali"},{"title":"Ghare Baire","year":1984,"language":"Bengali"},{"title":"Aranyer Din Ratri","year":1970,"language":"Bengali"},{"title":"Pratidwandi","year":1970,"language":"Bengali"},{"title":"Jana Aranya","year":1976,"language":"Bengali"},{"title":"City of God","year":2002,"language":"Portuguese"},{"title":"Central Station","year":1998,"language":"Portuguese"},{"title":"Bacurau","year":2019,"language":"Portuguese"},{"title":"The Second Mother","year":2015,"language":"Portuguese"},{"title":"Tabu","year":2012,"language":"Portuguese"},{"title":"Solaris","year":1972,"language":"Russian"},{"title":"Stalker","year":1979,"language":"Russian"},{"title":"Come and See","year":1985,"language":"Russian"},{"title":"Leviathan","year":2014,"language":"Russian"},{"title":"Loveless","year":2017,"language":"Russian"},{"title":"The Return","year":2003,"language":"Russian"},{"title":"The Fool","year":2014,"language":"Russian"},{"title":"Hard to Be a God","year":2013,"language":"Russian"},{"title":"Beanpole","year":2019,"language":"Russian"},{"title":"Andrei Rublev","year":1966,"language":"Russian"},{"title":"Battleship Potemkin","year":1925,"language":"Russian"},{"title":"Heat","year":1995,"language":"English"},{"title":"Se7en","year":1995,"language":"English"},{"title":"Reservoir Dogs","year":1992,"language":"English"},{"title":"The Usual Suspects","year":1995,"language":"English"},{"title":"American Beauty","year":1999,"language":"English"},{"title":"Memento","year":2000,"language":"English"},{"title":"Lost in Translation","year":2003,"language":"English"},{"title":"Catch Me If You Can","year":2002,"language":"English"},{"title":"Children of Men","year":2006,"language":"English"},{"title":"Into the Wild","year":2007,"language":"English"},{"title":"Slumdog Millionaire","year":2008,"language":"English"},{"title":"The Hurt Locker","year":2008,"language":"English"},{"title":"The King's Speech","year":2010,"language":"English"},{"title":"Drive","year":2011,"language":"English"},{"title":"Moneyball","year":2011,"language":"English"},{"title":"The Tree of Life","year":2011,"language":"English"},{"title":"Prisoners","year":2013,"language":"English"},{"title":"Gone Girl","year":2014,"language":"English"},{"title":"Ex Machina","year":2014,"language":"English"},{"title":"Spotlight","year":2015,"language":"English"},{"title":"Room","year":2015,"language":"English"},{"title":"The Revenant","year":2015,"language":"English"},{"title":"Hell or High Water","year":2016,"language":"English"},{"title":"Manchester by the Sea","year":2016,"language":"English"},{"title":"Blade Runner 2049","year":2017,"language":"English"},{"title":"Dunkirk","year":2017,"language":"English"},{"title":"Three Billboards Outside Ebbing, Missouri","year":2017,"language":"English"},{"title":"The Shape of Water","year":2017,"language":"English"},{"title":"A Star Is Born","year":2018,"language":"English"},{"title":"Bohemian Rhapsody","year":2018,"language":"English"},{"title":"The Favourite","year":2018,"language":"English"},{"title":"Uncut Gems","year":2019,"language":"English"},{"title":"The Lighthouse","year":2019,"language":"English"},{"title":"Midsommar","year":2019,"language":"English"},{"title":"Us","year":2019,"language":"English"},{"title":"Sound of Metal","year":2019,"language":"English"},{"title":"Jojo Rabbit","year":2019,"language":"English"},{"title":"Back to the Future","year":1985,"language":"English"},{"title":"The Breakfast Club","year":1985,"language":"English"},{"title":"Scarface","year":1983,"language":"English"},{"title":"The Shining","year":1980,"language":"English"},{"title":"Alien","year":1979,"language":"English"},{"title":"Apocalypse Now","year":1979,"language":"English"},{"title":"Rocky","year":1976,"language":"English"},{"title":"Taxi Driver","year":1976,"language":"English"},{"title":"One Flew Over the Cuckoo's Nest","year":1975,"language":"English"},{"title":"Jaws","year":1975,"language":"English"},{"title":"Chinatown","year":1974,"language":"English"},{"title":"The Exorcist","year":1973,"language":"English"},{"title":"Midnight Cowboy","year":1969,"language":"English"},{"title":"The Graduate","year":1967,"language":"English"},{"title":"Cool Hand Luke","year":1967,"language":"English"},{"title":"The Sound of Music","year":1965,"language":"English"},{"title":"Dr. Strangelove","year":1964,"language":"English"},{"title":"Lawrence of Arabia","year":1962,"language":"English"},{"title":"The Great Escape","year":1963,"language":"English"},{"title":"Ben-Hur","year":1959,"language":"English"},{"title":"Some Like It Hot","year":1959,"language":"English"},{"title":"Roman Holiday","year":1953,"language":"English"},{"title":"Singin' in the Rain","year":1952,"language":"English"},{"title":"Sunset Boulevard","year":1950,"language":"English"},{"title":"All About Eve","year":1950,"language":"English"},{"title":"It's a Wonderful Life","year":1946,"language":"English"},{"title":"The Maltese Falcon","year":1941,"language":"English"},{"title":"The Great Dictator","year":1940,"language":"English"},{"title":"Rebecca","year":1940,"language":"English"},{"title":"King Kong","year":1933,"language":"English"},{"title":"Frankenstein","year":1931,"language":"English"},{"title":"The General","year":1926,"language":"English"},{"title":"The Gold Rush","year":1925,"language":"English"},{"title":"Sherlock Jr.","year":1924,"language":"English"},{"title":"The Kid","year":1921,"language":"English"},{"title":"Amores Perros","year":2000,"language":"Spanish"},{"title":"Y Tu Mamá También","year":2001,"language":"Spanish"},{"title":"The Motorcycle Diaries","year":2004,"language":"Spanish"},{"title":"Nine Queens","year":2000,"language":"Spanish"},{"title":"The Official Story","year":1985,"language":"Spanish"},{"title":"Argentina, 1985","year":2022,"language":"Spanish"},{"title":"The Clan","year":2015,"language":"Spanish"},{"title":"Official Competition","year":2021,"language":"Spanish"},{"title":"The Good Boss","year":2021,"language":"Spanish"},{"title":"The Endless Trench","year":2019,"language":"Spanish"},{"title":"A Twelve-Year Night","year":2018,"language":"Spanish"},{"title":"The Bar","year":2017,"language":"Spanish"},{"title":"Belle de Jour","year":1967,"language":"French"},{"title":"Raw","year":2016,"language":"French"},{"title":"The Worst Person in the World","year":2021,"language":"French"},{"title":"The Class","year":2008,"language":"French"},{"title":"Tell No One","year":2006,"language":"French"},{"title":"Rust and Bone","year":2012,"language":"French"},{"title":"Two Days, One Night","year":2014,"language":"French"},{"title":"Girlhood","year":2014,"language":"French"},{"title":"A Special Day","year":1977,"language":"Italian"},{"title":"Perfect Strangers","year":2016,"language":"Italian"},{"title":"The Consequences of Love","year":2004,"language":"Italian"},{"title":"Drishyam: The Conclusion","year":2026,"language":"Hindi"},{"title":"Bail","year":2026,"language":"Kannada"},{"title":"Anbil Avan","year":2026,"language":"Tamil"},{"title":"Digger","year":2026,"language":"English"},{"title":"Verity","year":2026,"language":"English"},{"title":"Trikaaram","year":2026,"language":"Kannada"},{"title":"SI Yugandhar","year":2026,"language":"Telugu"},{"title":"Oye Chill Maar","year":2026,"language":"Hindi"},{"title":"Don't Trouble The Trouble","year":2026,"language":"Telugu"},{"title":"Avaraachan And Sons","year":2026,"language":"Malayalam"},{"title":"The Third Murder","year":2026,"language":"Malayalam"},{"title":"Rupayanamaha","year":2026,"language":"Telugu"},{"title":"Pooja Meri Jaan","year":2026,"language":"Hindi"},{"title":"Aadarsha Kutumbam House No 47 - AK 47","year":2026,"language":"Telugu"},{"title":"Super Star","year":2026,"language":"Kannada"},{"title":"Namukku Kodathiyil Kaanam","year":2026,"language":"Malayalam"},{"title":"Nova","year":2026,"language":"Tamil"},{"title":"Sanchaari","year":2026,"language":"Telugu"},{"title":"321 [Love Marriage Vs Arranged]","year":2026,"language":"Telugu"},{"title":"Reawakened Man","year":2026,"language":"Korean"},{"title":"Possible Love","year":2026,"language":"Korean"},{"title":"A Trip to Gyeongju","year":2026,"language":"Korean"},{"title":"Little Dreamers","year":2026,"language":"Korean"},{"title":"Last Summer","year":2026,"language":"Korean"},{"title":"The Gorals","year":2026,"language":"Korean"},{"title":"The Fin","year":2026,"language":"Korean"},{"title":"Taboo","year":2026,"language":"Indonesian"},{"title":"The Master and Margarita","year":2026,"language":"Russian"},{"title":"Minotaur","year":2026,"language":"Russian"},{"title":"Ha-Chan, Shake Your Booty!","year":2026,"language":"Japanese"},{"title":"Acharya","year":2026,"language":"Nepali"},{"title":"Shadows of Beirut","year":2026,"language":"French / Arabic"},{"title":"Pension Patta","year":2026,"language":"Nepali"},{"title":"Akshara","year":2026,"language":"Nepali"},{"title":"Four Seasons in Java","year":2026,"language":"Indonesian"},{"title":"Visitation","year":2026,"language":"German"},{"title":"Bad Lieutenant: Tokyo","year":2026,"language":"Japanese"},{"title":"Karateka","year":2026,"language":"Spanish / English"},{"title":"Dante","year":2026,"language":"Spanish"},{"title":"Possession: The Darkness Within","year":2026,"language":"English"},{"title":"Cocktail 2","year":2026,"language":"Hindi"},{"title":"Welcome to the Jungle","year":2026,"language":"Hindi"},{"title":"Dhamaal 4","year":2026,"language":"Hindi"},{"title":"Alpha","year":2026,"language":"Hindi"},{"title":"Jailer 2","year":2026,"language":"Tamil"},{"title":"Awarapan 2","year":2026,"language":"Hindi"},{"title":"Mirzapur: The Movie","year":2026,"language":"Hindi"},{"title":"Drishyam 3","year":2026,"language":"Hindi"},{"title":"Vayuputra","year":2026,"language":"Telugu"},{"title":"Ramayana: Rise of a Legend","year":2026,"language":"Hindi / Tamil / Telugu / Malayalam / Kannada"},{"title":"V. Shantaram","year":2026,"language":"Hindi"},{"title":"King","year":2026,"language":"Hindi"},{"title":"Shakti Shalini","year":2026,"language":"Hindi"},{"title":"Rowdy Janardhana","year":2026,"language":"Telugu"},{"title":"Good Time","year":2026,"language":"Telugu"},{"title":"Dongri: Gangster's Paradise","year":2026,"language":"Hindi"},{"title":"Thaai Nilam","year":2026,"language":"Tamil"},{"title":"Brindavihari","year":2026,"language":"Kannada"},{"title":"Orijinal","year":2026,"language":"Malayalam"},{"title":"Street Fighter","year":2026,"language":"English"},{"title":"Chandrayan","year":2026,"language":"Telugu"},{"title":"Donga Naa Koduku","year":2026,"language":"Telugu"},{"title":"ENE Repeat","year":2026,"language":"Telugu"},{"title":"Rayavalasa","year":2026,"language":"Telugu"},{"title":"Mysaa","year":2026,"language":"Telugu / Hindi / Tamil / Malayalam"},{"title":"Vrushakarma","year":2026,"language":"Telugu / Tamil / Kannada / Hindi / Malayalam"},{"title":"Sigma","year":2026,"language":"Telugu / Tamil"},{"title":"Masterplan","year":2026,"language":"English"},{"title":"Shaun the Sheep: The Beast of Mossy Bottom","year":2026,"language":"English"},{"title":"Whalefall","year":2026,"language":"English"},{"title":"Clayface","year":2026,"language":"English"},{"title":"Ghosts: The Possession of Button House","year":2026,"language":"English"},{"title":"Kaiji: Jinsei Revenge Game","year":2026,"language":"Japanese"}]</script>
   <script>
     const movies = [
       { title: "Sinners", year: 2025, genre: "Drama", language: "English", industry: "Hollywood", tag: "Spotlight", style: "linear-gradient(150deg,#c87b45 0%,#8e3e37 43%,#211b27 100%)" },
@@ -575,11 +659,89 @@
       { title: "Tekka", year: 2024, genre: "Thriller", language: "Bengali", industry: "Bengali", tag: "Mystery", style: "linear-gradient(150deg,#9aa2a6 0%,#5c626e 43%,#272b37 100%)" },
       { title: "Navra Maza Navsacha 2", year: 2024, genre: "Comedy", language: "Marathi", industry: "Marathi", tag: "Comedy", style: "linear-gradient(150deg,#e8c17c 0%,#d08156 43%,#564050 100%)" }
     ];
+    const existingMovieKeys = new Set(movies.map(movie => `${movie.title.toLowerCase()}|${movie.year}|${movie.language.toLowerCase()}`));
+    const industryForLanguage = language => ({
+      English: "Hollywood",
+      Hindi: "Bollywood",
+      Kannada: "Sandalwood",
+      Tamil: "Kollywood",
+      Telugu: "Tollywood",
+      Malayalam: "Mollywood",
+      Bengali: "Bengali",
+      Marathi: "Marathi"
+    })[language] || "International";
+    JSON.parse(document.querySelector("#movie-catalog-data").textContent).forEach(movie => {
+      const key = `${movie.title.toLowerCase()}|${movie.year}|${movie.language.toLowerCase()}`;
+      if (existingMovieKeys.has(key)) return;
+      existingMovieKeys.add(key);
+      movies.push({
+        ...movie,
+        genre: "Unclassified",
+        industry: industryForLanguage(movie.language),
+        tag: "Catalog",
+        style: "linear-gradient(150deg,#454154 0%,#333448 48%,#171923 100%)"
+      });
+    });
+    const posterImages = {
+      "Sinners": "https://upload.wikimedia.org/wikipedia/en/5/5f/Sinners_%282025_film%29_poster.jpg",
+      "F1: The Movie": "https://upload.wikimedia.org/wikipedia/en/3/38/F1_%282025_film%29.png",
+      "Superman": "https://upload.wikimedia.org/wikipedia/en/3/32/Superman_%282025_film%29_poster.jpg",
+      "The Fantastic Four: First Steps": "https://upload.wikimedia.org/wikipedia/en/1/13/The_Fantastic_Four_First_Steps_poster.jpg",
+      "How to Train Your Dragon": "https://upload.wikimedia.org/wikipedia/en/8/80/How_To_Train_Your_Dragon_2025_Poster.jpg",
+      "Jurassic World Rebirth": "https://upload.wikimedia.org/wikipedia/en/a/a5/Jurassic_World_Rebirth_poster.jpg",
+      "Wicked: For Good": "https://upload.wikimedia.org/wikipedia/en/b/bf/Wicked_For_Good_poster.jpg",
+      "Avatar: Fire and Ash": "https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg",
+      "Zootopia 2": "https://upload.wikimedia.org/wikipedia/en/6/6a/Zootopia_2_%282025_film%29.jpg",
+      "Mission: Impossible - The Final Reckoning": "https://upload.wikimedia.org/wikipedia/en/1/1f/Mission_Impossible_%E2%80%93_The_Final_Reckoning_Poster.jpg",
+      "Chhaava": "https://upload.wikimedia.org/wikipedia/en/7/75/Chhaava_film_poster.jpg",
+      "Stree 2": "https://upload.wikimedia.org/wikipedia/en/a/a1/Stree_2.jpg",
+      "Laapataa Ladies": "https://upload.wikimedia.org/wikipedia/en/5/52/Laapataa_Ladies_poster.jpg",
+      "Crew": "https://upload.wikimedia.org/wikipedia/en/8/8f/Crew_2024_film_poster.jpeg",
+      "Pushpa 2: The Rule": "https://upload.wikimedia.org/wikipedia/en/1/11/Pushpa_2-_The_Rule.jpg",
+      "Kalki 2898 AD": "https://upload.wikimedia.org/wikipedia/en/4/4c/Kalki_2898_AD.jpg",
+      "Devara: Part 1": "https://upload.wikimedia.org/wikipedia/en/f/f0/Devara_Part_1.jpg",
+      "Amaran": "https://upload.wikimedia.org/wikipedia/en/5/54/Amaran_2024_poster.jpg",
+      "Maharaja": "https://upload.wikimedia.org/wikipedia/en/8/82/Maharaja_2024_film_poster.jpg",
+      "Vidaamuyarchi": "https://upload.wikimedia.org/wikipedia/en/0/04/Vidaamuyarchi.jpg",
+      "Manjummel Boys": "https://upload.wikimedia.org/wikipedia/en/9/99/Manjummel_Boys_poster.jpg",
+      "Aavesham": "https://upload.wikimedia.org/wikipedia/en/d/d1/Aavesham.jpg",
+      "Premalu": "https://upload.wikimedia.org/wikipedia/en/c/c5/Premalu_film_poster.jpg",
+      "Empuraan": "https://upload.wikimedia.org/wikipedia/en/3/35/L2_-_Empuraan_poster.jpg",
+      "Kantara: Chapter 1": "https://upload.wikimedia.org/wikipedia/en/6/69/Kantara-_Chapter_1_poster.jpg",
+      "Bohurupi": "https://upload.wikimedia.org/wikipedia/en/1/10/Bohurupi_release_poster.jpg",
+      "Tekka": "https://upload.wikimedia.org/wikipedia/en/c/c3/Tekka_poster_%282%29.jpg",
+      "Navra Maza Navsacha 2": "https://upload.wikimedia.org/wikipedia/en/1/1b/Navra_Maza_Navsacha_2.jpg"
+    };
+    const publicDomainDownloads = {
+      "His Girl Friday": {
+        url: "https://archive.org/download/his_girl_friday/his_girl_friday.mp4?download=1",
+        format: "MP4",
+        size: "~575 MB"
+      },
+      "Charade": {
+        url: "https://archive.org/download/charade_202604/Charade.ia.mp4?download=1",
+        format: "MP4",
+        size: "~659 MB"
+      }
+    };
+    movies.forEach(movie => {
+      movie.searchText = `${movie.title} ${movie.genre} ${movie.year} ${movie.language} ${movie.industry}`.toLowerCase();
+    });
+    const yearFilter = document.querySelector("#year-filter");
+    [...new Set(movies.map(movie => movie.year))]
+      .sort((a, b) => b - a)
+      .forEach(year => {
+        const option = document.createElement("option");
+        option.value = String(year);
+        option.textContent = String(year);
+        yearFilter.append(option);
+      });
     const grid = document.querySelector("#movie-grid");
     const search = document.querySelector("#movie-search");
     const genreFilters = [...document.querySelectorAll("[data-genre]")];
     const industryFilters = [...document.querySelectorAll("[data-industry]")];
     const saved = new Set();
+    const PAGE_SIZE = 48;
     const authDialog = document.querySelector("#auth-dialog");
     const authForm = document.querySelector("#auth-form");
     const nameField = document.querySelector("#name-field");
@@ -588,28 +750,121 @@
     let activeIndustry = "All";
     let showSaved = false;
     let toastTimeout;
+    let searchTimeout;
+    let visibleMovieCount = PAGE_SIZE;
 
-    function justWatchUrl(title) {
-      return "https://www.justwatch.com/in/search?q=" + encodeURIComponent(title);
+    function movieDetailsUrl(title) {
+      return `?movie=${encodeURIComponent(title)}`;
     }
 
-    function renderMovies() {
-      const term = search.value.trim().toLowerCase();
-      const results = movies.filter(movie => {
-        const matchesSearch = `${movie.title} ${movie.genre} ${movie.year} ${movie.language} ${movie.industry}`.toLowerCase().includes(term);
-        const matchesGenre = activeGenre === "All" || movie.genre === activeGenre;
-        const matchesIndustry = activeIndustry === "All" || movie.industry === activeIndustry;
-        const matchesSaved = !showSaved || saved.has(movie.title);
-        return matchesSearch && matchesGenre && matchesIndustry && matchesSaved;
-      });
+    async function fetchWikidataMovieFacts(articleTitle, signal) {
+      const wikipediaUrl = new URL("https://en.wikipedia.org/w/api.php");
+      wikipediaUrl.search = new URLSearchParams({
+        action: "query",
+        prop: "pageprops",
+        ppprop: "wikibase_item",
+        titles: articleTitle,
+        format: "json",
+        origin: "*"
+      }).toString();
+      let response = await fetch(wikipediaUrl, { signal });
+      if (!response.ok) throw new Error(`Wikipedia metadata lookup returned ${response.status}`);
+      const pageData = await response.json();
+      const itemId = Object.values(pageData.query?.pages || {})[0]?.pageprops?.wikibase_item;
+      if (!itemId) return null;
 
-      if (results.length === 0) {
-        grid.innerHTML = `<div class="empty-state">${showSaved && saved.size === 0 ? "Your list is ready when you are — save a movie with the bookmark icon." : "No movies found. Try another title, language, or cinema."}</div>`;
-        return;
+      const entityUrl = new URL("https://www.wikidata.org/w/api.php");
+      entityUrl.search = new URLSearchParams({
+        action: "wbgetentities",
+        ids: itemId,
+        props: "claims",
+        format: "json",
+        origin: "*"
+      }).toString();
+      response = await fetch(entityUrl, { signal });
+      if (!response.ok) throw new Error(`Wikidata movie lookup returned ${response.status}`);
+      const entity = (await response.json()).entities?.[itemId];
+      if (!entity) return null;
+
+      const castIds = [...new Set((entity.claims?.P161 || [])
+        .map(statement => statement.mainsnak?.datavalue?.value?.id)
+        .filter(Boolean))].slice(0, 12);
+      let cast = [];
+      if (castIds.length) {
+        const labelsUrl = new URL("https://www.wikidata.org/w/api.php");
+        labelsUrl.search = new URLSearchParams({
+          action: "wbgetentities",
+          ids: castIds.join("|"),
+          props: "labels",
+          languages: "en",
+          format: "json",
+          origin: "*"
+        }).toString();
+        response = await fetch(labelsUrl, { signal });
+        if (!response.ok) throw new Error(`Wikidata cast lookup returned ${response.status}`);
+        const castData = (await response.json()).entities || {};
+        cast = castIds.map(id => castData[id]?.labels?.en?.value).filter(Boolean);
       }
-      grid.innerHTML = results.map(movie => `
+
+      const ratings = (entity.claims?.P444 || [])
+        .map(statement => statement.mainsnak?.datavalue?.value)
+        .map(value => typeof value === "string" ? value : value?.amount)
+        .filter(value => typeof value === "string" && value.trim());
+      const imdbId = entity.claims?.P345?.[0]?.mainsnak?.datavalue?.value;
+      return { cast, ratings, imdbId, itemId };
+    }
+
+    function renderProviderLinks(title) {
+      const providers = [
+        { name: "Netflix", url: `https://www.netflix.com/search?q=${encodeURIComponent(title)}` },
+        { name: "Prime Video", url: `https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${encodeURIComponent(title)}` },
+        { name: "Apple TV", url: `https://tv.apple.com/search?term=${encodeURIComponent(title)}` }
+      ];
+      const container = document.querySelector("#detail-providers");
+      container.replaceChildren(...providers.map(provider => {
+        const link = document.createElement("a");
+        link.className = "provider-card";
+        link.href = provider.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        const name = document.createElement("span");
+        name.textContent = provider.name;
+        const action = document.createElement("span");
+        action.textContent = "Search ↗";
+        link.append(name, action);
+        return link;
+      }));
+    }
+
+    function fallbackPosterUrl(movie) {
+      const hue = [...movie.title].reduce((value, character) => (value * 31 + character.charCodeAt(0)) % 360, 0);
+      const escapeText = value => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      const titleLines = [];
+      let line = "";
+      movie.title.split(/\s+/).forEach(word => {
+        if (line && `${line} ${word}`.length > 22) {
+          titleLines.push(line);
+          line = word;
+        } else {
+          line = line ? `${line} ${word}` : word;
+        }
+      });
+      if (line) titleLines.push(line);
+      const titleMarkup = titleLines.slice(0, 3).map((titleLine, index) =>
+        `<text x="28" y="${374 + index * 27}" fill="#fff" font-family="Arial,sans-serif" font-size="24" font-weight="700">${escapeText(titleLine)}</text>`
+      ).join("");
+      const poster = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="hsl(${hue} 42% 33%)"/><stop offset="1" stop-color="hsl(${(hue + 65) % 360} 48% 10%)"/></linearGradient><linearGradient id="shade" y2="1"><stop stop-color="#08090e" stop-opacity="0"/><stop offset="1" stop-color="#08090e" stop-opacity=".95"/></linearGradient></defs><path fill="url(#bg)" d="M0 0h300v450H0z"/><circle cx="208" cy="154" r="104" fill="none" stroke="#fff" stroke-opacity=".18"/><circle cx="208" cy="154" r="76" fill="none" stroke="#fff" stroke-opacity=".12"/><path d="M0 310 300 100v350H0z" fill="#fff" fill-opacity=".035"/><path d="M34 72h54M34 82h34" stroke="#fff" stroke-opacity=".65" stroke-width="2"/><path fill="url(#shade)" d="M0 225h300v225H0z"/><text x="28" y="337" fill="#fff" font-family="Arial,sans-serif" font-size="10" letter-spacing="4" opacity=".78">MOVIES WIZZ · ${movie.year}</text>${titleMarkup}<text x="28" y="432" fill="#fff" font-family="Arial,sans-serif" font-size="11" letter-spacing="2" opacity=".75">${escapeText(movie.language.toUpperCase())}</text><path d="M28 442h244" stroke="#fff" stroke-opacity=".4"/></svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(poster)}`;
+    }
+
+    function renderMovieCard(movie) {
+      const fallback = fallbackPosterUrl(movie);
+      const poster = posterImages[movie.title];
+      const lookup = poster ? "" : `data-poster-lookup="${encodeURIComponent(movie.title.replaceAll(" ", "_"))}"`;
+      return `
         <article class="movie-card">
-          <a class="poster" href="${justWatchUrl(movie.title)}" target="_blank" rel="noopener noreferrer" aria-label="Find official viewing options for ${movie.title}" style="--poster:${movie.style}">
+          <a class="poster" href="${movieDetailsUrl(movie.title)}" aria-label="View details for ${movie.title}" style="--poster:${movie.style}">
+            <img class="poster-image" src="${poster || fallback}" data-fallback="${fallback}" ${lookup} alt="${movie.title} poster artwork" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=this.dataset.fallback;this.removeAttribute('data-poster-lookup')">
             <span class="poster-tag">${movie.tag}</span>
             <span class="poster-title"><span class="poster-label">${movie.language} cinema · ${movie.year}</span>${movie.title}</span>
           </a>
@@ -619,22 +874,228 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 4.75A1.75 1.75 0 0 1 7.75 3h8.5A1.75 1.75 0 0 1 18 4.75V21l-6-4-6 4V4.75Z"/></svg>
             </button>
           </div>
-          <a class="find-link" href="${justWatchUrl(movie.title)}" target="_blank" rel="noopener noreferrer">Find legal watch options ↗</a>
-        </article>`).join("");
+        </article>`;
+    }
 
-      grid.querySelectorAll(".save-button").forEach(button => {
-        button.addEventListener("click", () => {
-          const title = button.dataset.title;
-          if (saved.has(title)) {
-            saved.delete(title);
-            showToast(`${title} removed from your list.`);
+    async function fetchMovieSummary(movie, signal) {
+      const summaryUrl = title => `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replaceAll(" ", "_"))}`;
+      let response = await fetch(summaryUrl(movie.title), { signal });
+      let summary = response.ok ? await response.json() : null;
+
+      if (response.status !== 404 && !response.ok) {
+        throw new Error(`Movie details lookup returned ${response.status}`);
+      }
+      if (summary?.type === "disambiguation" || !summary?.extract) {
+        const searchUrl = new URL("https://en.wikipedia.org/w/api.php");
+        searchUrl.search = new URLSearchParams({
+          action: "query",
+          list: "search",
+          srsearch: `${movie.title} ${movie.year} film`,
+          format: "json",
+          origin: "*"
+        }).toString();
+        response = await fetch(searchUrl, { signal });
+        if (!response.ok) throw new Error(`Movie details search returned ${response.status}`);
+        const searchResults = await response.json();
+        const result = searchResults.query?.search?.find(entry => entry.title.toLowerCase().includes(movie.title.toLowerCase()) && entry.title.includes(String(movie.year)))
+          || searchResults.query?.search?.find(entry => entry.title.toLowerCase().includes(movie.title.toLowerCase()));
+        if (result) {
+          response = await fetch(summaryUrl(result.title), { signal });
+          if (!response.ok) throw new Error(`Movie overview lookup returned ${response.status}`);
+          summary = await response.json();
+        }
+      }
+      return summary?.type === "disambiguation" ? null : summary;
+    }
+
+    let detailRequestController;
+
+    function renderMovieDetails(movie) {
+      document.querySelector("#catalog-view").hidden = true;
+      const detailView = document.querySelector("#movie-detail-view");
+      detailView.hidden = false;
+      document.body.classList.add("detail-mode");
+      document.title = `${movie.title} — movies wizz`;
+
+      document.querySelector("#detail-title").textContent = movie.title;
+      document.querySelector("#detail-meta").textContent = `${movie.year} · ${movie.language} · ${movie.genre} · ${movie.industry}`;
+      const castElement = document.querySelector("#detail-cast");
+      const ratingElement = document.querySelector("#detail-rating");
+      const castSource = document.querySelector("#detail-cast-source");
+      const ratingSource = document.querySelector("#detail-rating-source");
+      castElement.textContent = "Loading public movie data…";
+      ratingElement.textContent = "Loading public movie data…";
+      castSource.hidden = true;
+      ratingSource.hidden = true;
+      renderProviderLinks(movie.title);
+      const detailPoster = document.querySelector("#detail-poster-image");
+      detailPoster.alt = `${movie.title} poster artwork`;
+      detailPoster.onerror = () => {
+        detailPoster.onerror = null;
+        detailPoster.src = fallbackPosterUrl(movie);
+      };
+      detailPoster.src = posterImages[movie.title] || fallbackPosterUrl(movie);
+
+      const downloadSection = document.querySelector("#detail-download-section");
+      const downloads = document.querySelector("#detail-downloads");
+      downloads.replaceChildren();
+      const download = publicDomainDownloads[movie.title];
+      downloadSection.hidden = !download;
+      if (download) {
+        const card = document.createElement("article");
+        card.className = "download-card";
+        const metadata = document.createElement("div");
+        const format = document.createElement("h3");
+        format.textContent = `${download.format} download`;
+        const size = document.createElement("p");
+        size.textContent = download.size;
+        metadata.append(format, size);
+        const link = document.createElement("a");
+        link.className = "button download-link";
+        link.href = download.url;
+        link.textContent = "Download from Internet Archive";
+        card.append(metadata, link);
+        downloads.append(card);
+      }
+
+      const overview = document.querySelector("#detail-overview");
+      const reference = document.querySelector("#detail-reference");
+      overview.textContent = "Loading movie details…";
+      reference.hidden = true;
+      detailRequestController?.abort();
+      detailRequestController = new AbortController();
+      fetchMovieSummary(movie, detailRequestController.signal)
+        .then(data => {
+          if (data?.extract) {
+            overview.textContent = data.extract;
+            if (data.content_urls?.desktop?.page) {
+              reference.href = data.content_urls.desktop.page;
+              reference.hidden = false;
+            }
+            if (!posterImages[movie.title] && data.thumbnail?.source) detailPoster.src = data.thumbnail.source;
           } else {
-            saved.add(title);
-            showToast(`${title} saved to your list.`);
+            overview.textContent = "No overview is available for this title yet.";
           }
-          renderMovies();
+          return fetchWikidataMovieFacts(data?.title || movie.title, detailRequestController.signal);
+        })
+        .then(facts => {
+          if (!facts) {
+            castElement.textContent = "No cast record found in the public metadata source.";
+            ratingElement.textContent = "No rating record found in the public metadata source.";
+            return;
+          }
+          castElement.textContent = facts.cast.length ? facts.cast.join(", ") : "No cast list found in the public metadata source.";
+          if (facts.cast.length) {
+            castSource.href = `https://www.wikidata.org/wiki/${facts.itemId}`;
+            castSource.hidden = false;
+          }
+          if (facts.ratings.length) {
+            ratingElement.textContent = `${facts.ratings.join(" · ")} (Wikidata)`;
+            ratingSource.href = `https://www.wikidata.org/wiki/${facts.itemId}`;
+            ratingSource.textContent = "Source ↗";
+            ratingSource.hidden = false;
+          } else if (facts.imdbId) {
+            ratingElement.textContent = "No numeric score in Wikidata.";
+            ratingSource.href = `https://www.imdb.com/title/${encodeURIComponent(facts.imdbId)}/`;
+            ratingSource.textContent = "Check IMDb rating ↗";
+            ratingSource.hidden = false;
+          } else {
+            ratingElement.textContent = "No rating record found in the public metadata source.";
+          }
+        })
+        .catch(error => {
+          if (error.name === "AbortError") return;
+          console.error(`Could not load public details for "${movie.title}":`, error);
+          if (overview.textContent === "Loading movie details…") {
+            overview.textContent = "Movie details could not be loaded right now. Please try again later.";
+          }
+          castElement.textContent = "Cast data could not be loaded right now.";
+          ratingElement.textContent = "Rating data could not be loaded right now.";
+          castSource.hidden = true;
+          ratingSource.hidden = true;
         });
+    }
+
+    function syncMovieRoute() {
+      const title = new URLSearchParams(location.search).get("movie");
+      const movie = movies.find(entry => entry.title === title);
+      if (movie) {
+        renderMovieDetails(movie);
+        return;
+      }
+      detailRequestController?.abort();
+      document.querySelector("#movie-detail-view").hidden = true;
+      document.querySelector("#catalog-view").hidden = false;
+      document.body.classList.remove("detail-mode");
+      document.title = "movies wizz";
+      if (title) showToast("That movie could not be found in the catalog.");
+    }
+
+    const posterLookupQueue = [];
+    let activePosterLookups = 0;
+    const posterObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            posterObserver.unobserve(entry.target);
+            posterLookupQueue.push(entry.target);
+          });
+          processPosterLookupQueue();
+        }, { rootMargin: "250px" })
+      : null;
+
+    function processPosterLookupQueue() {
+      while (activePosterLookups < 3 && posterLookupQueue.length) {
+        const image = posterLookupQueue.shift();
+        if (!image.isConnected) continue;
+        const title = decodeURIComponent(image.dataset.posterLookup);
+        activePosterLookups++;
+        fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${image.dataset.posterLookup}`)
+          .then(response => {
+            if (response.status === 404) return null;
+            if (!response.ok) throw new Error(`Wikipedia poster lookup returned ${response.status}`);
+            return response.json();
+          })
+          .then(data => {
+            if (data?.thumbnail?.source) image.src = data.thumbnail.source;
+            image.removeAttribute("data-poster-lookup");
+          })
+          .catch(error => {
+            console.warn(`Could not load a poster for "${title}": ${error.message}`);
+            image.removeAttribute("data-poster-lookup");
+          })
+          .finally(() => {
+            activePosterLookups--;
+            processPosterLookupQueue();
+          });
+      }
+    }
+
+    function renderMovies() {
+      const term = search.value.trim().toLowerCase();
+      const results = movies.filter(movie => {
+        const matchesSearch = movie.searchText.includes(term);
+        const matchesYear = yearFilter.value === "All" || movie.year === Number(yearFilter.value);
+        const matchesGenre = activeGenre === "All" || movie.genre === activeGenre;
+        const matchesIndustry = activeIndustry === "All" || movie.industry === activeIndustry;
+        const matchesSaved = !showSaved || saved.has(movie.title);
+        return matchesSearch && matchesYear && matchesGenre && matchesIndustry && matchesSaved;
       });
+
+      if (results.length === 0) {
+        grid.innerHTML = `<div class="empty-state">${showSaved && saved.size === 0 ? "Your list is ready when you are — save a movie with the bookmark icon." : "No movies found. Try another title, language, or cinema."}</div>`;
+        document.querySelector("#results-count").textContent = "Showing 0 movies";
+        document.querySelector("#load-more").hidden = true;
+        return;
+      }
+      const visibleResults = results.slice(0, visibleMovieCount);
+      grid.innerHTML = visibleResults.map(renderMovieCard).join("");
+
+      if (posterObserver) {
+        grid.querySelectorAll(".poster-image[data-poster-lookup]").forEach(image => posterObserver.observe(image));
+      }
+      document.querySelector("#results-count").textContent = `Showing ${visibleResults.length} of ${results.length} movies`;
+      document.querySelector("#load-more").hidden = visibleResults.length >= results.length;
     }
 
     function showToast(message) {
@@ -645,9 +1106,55 @@
       toastTimeout = setTimeout(() => toast.classList.remove("show"), 2300);
     }
 
-    search.addEventListener("input", renderMovies);
+    search.addEventListener("input", () => {
+      clearTimeout(searchTimeout);
+      visibleMovieCount = PAGE_SIZE;
+      searchTimeout = setTimeout(renderMovies, 120);
+    });
+    yearFilter.addEventListener("change", () => {
+      visibleMovieCount = PAGE_SIZE;
+      renderMovies();
+    });
+    document.querySelector("#load-more").addEventListener("click", () => {
+      visibleMovieCount += PAGE_SIZE;
+      renderMovies();
+    });
+    grid.addEventListener("click", event => {
+      const poster = event.target instanceof Element ? event.target.closest(".poster") : null;
+      if (poster) {
+        const title = poster.getAttribute("aria-label")?.replace(/^View details for /, "");
+        const movie = movies.find(entry => entry.title === title);
+        if (movie) {
+          event.preventDefault();
+          history.pushState({ movieTitle: movie.title }, "", movieDetailsUrl(movie.title));
+          renderMovieDetails(movie);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        return;
+      }
+      const button = event.target instanceof Element ? event.target.closest(".save-button") : null;
+      if (!button) return;
+      const title = button.dataset.title;
+      if (saved.has(title)) {
+        saved.delete(title);
+        showToast(`${title} removed from your list.`);
+      } else {
+        saved.add(title);
+        showToast(`${title} saved to your list.`);
+      }
+      renderMovies();
+    });
+    document.querySelector("#detail-back").addEventListener("click", () => {
+      if (history.state?.movieTitle) {
+        history.back();
+      } else {
+        location.href = location.pathname;
+      }
+    });
+    window.addEventListener("popstate", syncMovieRoute);
     genreFilters.forEach(button => button.addEventListener("click", () => {
       activeGenre = button.dataset.genre;
+      visibleMovieCount = PAGE_SIZE;
       showSaved = false;
       document.querySelector("#saved-nav").classList.remove("active");
       genreFilters.forEach(filter => filter.classList.toggle("active", filter === button));
@@ -655,6 +1162,7 @@
     }));
     industryFilters.forEach(button => button.addEventListener("click", () => {
       activeIndustry = button.dataset.industry;
+      visibleMovieCount = PAGE_SIZE;
       showSaved = false;
       document.querySelector("#saved-nav").classList.remove("active");
       industryFilters.forEach(filter => filter.classList.toggle("active", filter === button));
@@ -667,6 +1175,7 @@
     document.querySelector("#saved-nav").addEventListener("click", event => {
       event.preventDefault();
       showSaved = !showSaved;
+      visibleMovieCount = PAGE_SIZE;
       activeGenre = "All";
       activeIndustry = "All";
       genreFilters.forEach(filter => filter.classList.toggle("active", filter.dataset.genre === "All"));
@@ -690,7 +1199,7 @@
         ? "Get ready to save your next movie-night pick."
         : "Sign in to keep your movie list close.";
       document.querySelector("#auth-submit").textContent = isCreatingAccount ? "Create account" : "Sign in";
-      document.querySelector("#auth-toggle-copy").textContent = isCreatingAccount ? "Already have an account?" : "New to FRAME?";
+      document.querySelector("#auth-toggle-copy").textContent = isCreatingAccount ? "Already have an account?" : "New to movies wizz?";
       event.currentTarget.textContent = isCreatingAccount ? "Sign in" : "Create an account";
     });
     authForm.addEventListener("submit", event => {
@@ -710,7 +1219,7 @@
       shareUrl.hash = "";
       try {
         if (navigator.share) {
-          await navigator.share({ title: "FRAME — Find your next favorite", url: shareUrl.href });
+          await navigator.share({ title: "movies wizz", url: shareUrl.href });
         } else if (navigator.clipboard) {
           await navigator.clipboard.writeText(shareUrl.href);
           showToast("Share link copied to your clipboard.");
@@ -722,6 +1231,7 @@
       }
     });
     renderMovies();
+    syncMovieRoute();
   </script>
 </body>
 </html>
