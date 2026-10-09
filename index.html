@@ -276,6 +276,8 @@
     .detail-copy { min-width: 0; }
     .detail-copy h1 { margin: 0; font: 800 clamp(30px, 5vw, 54px)/1.05 Manrope, sans-serif; letter-spacing: -1.8px; }
     .detail-meta { margin: 12px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .detail-save-button { margin: 0 0 8px; }
+    .detail-save-button.is-saved { border-color: rgba(18,173,120,.55); background: rgba(18,173,120,.14); color: #65d9ad; }
     .detail-copy h2 { margin: 26px 0 9px; font: 700 17px Manrope, sans-serif; }
     .detail-overview { max-width: 700px; color: #c4c1cb; font-size: 14px; line-height: 1.75; }
     .detail-link { display: inline-flex; margin-top: 6px; }
@@ -768,6 +770,10 @@
           <span class="eyebrow">Movie details</span>
           <h1 id="detail-title"></h1>
           <p class="detail-meta" id="detail-meta"></p>
+          <button class="button detail-save-button" id="detail-save-button" type="button" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 4.75A1.75 1.75 0 0 1 7.75 3h8.5A1.75 1.75 0 0 1 18 4.75V21l-6-4-6 4V4.75Z"/></svg>
+            <span id="detail-save-label">Add to My list</span>
+          </button>
           <div class="detail-facts" aria-label="Movie information">
             <div class="detail-fact"><strong>Cast</strong><span id="detail-cast">Loading public movie data…</span><a class="find-link detail-link" id="detail-cast-source" target="_blank" rel="noopener noreferrer" hidden>Source ↗</a></div>
             <div class="detail-fact"><strong>Rating</strong><span id="detail-rating">Loading public movie data…</span><a class="find-link detail-link" id="detail-rating-source" target="_blank" rel="noopener noreferrer" hidden></a></div>
@@ -1114,6 +1120,7 @@
 
       document.querySelector("#detail-title").textContent = movie.title;
       document.querySelector("#detail-meta").textContent = `${movieReleaseLabel(movie)} · ${movie.language} · ${movie.genre} · ${movie.country || movie.industry}`;
+      updateDetailSaveButton(movie.title);
       const castElement = document.querySelector("#detail-cast");
       const ratingElement = document.querySelector("#detail-rating");
       const castSource = document.querySelector("#detail-cast-source");
@@ -1345,6 +1352,7 @@
           watchlist.titles.forEach(savedTitle => saved.add(savedTitle));
         }
         showToast(`${title} ${saved.has(title) ? "saved to" : "removed from"} your list.`);
+        updateDetailSaveButton(title);
         renderMovies();
       } catch (error) {
         console.error(`Could not update the watchlist for "${title}":`, error);
@@ -1352,6 +1360,17 @@
       } finally {
         button.disabled = false;
       }
+    }
+
+    function updateDetailSaveButton(title) {
+      const button = document.querySelector("#detail-save-button");
+      if (!button || document.querySelector("#detail-title").textContent !== title) return;
+      const isSaved = saved.has(title);
+      button.classList.toggle("is-saved", isSaved);
+      button.setAttribute("aria-pressed", String(isSaved));
+      button.querySelector("#detail-save-label").textContent = isSaved
+        ? "Saved to My list"
+        : "Add to My list";
     }
 
     search.addEventListener("input", () => {
@@ -1397,6 +1416,12 @@
       } else {
         location.href = location.pathname;
       }
+    });
+    document.querySelector("#detail-save-button").addEventListener("click", async event => {
+      await toggleSavedMovie(
+        document.querySelector("#detail-title").textContent,
+        event.currentTarget
+      );
     });
     window.addEventListener("popstate", syncMovieRoute);
     genreFilters.forEach(button => button.addEventListener("click", () => {
