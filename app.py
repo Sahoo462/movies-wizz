@@ -650,7 +650,7 @@ class MoviesWizzRequestHandler(BaseHTTPRequestHandler):
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    host = os.environ.get("HOST", "127.0.0.1")
+    host = os.environ.get("HOST", "0.0.0.0")
     try:
         port = int(os.environ.get("PORT", "8000"))
     except ValueError as error:
