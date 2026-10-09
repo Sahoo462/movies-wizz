@@ -650,8 +650,13 @@ class MoviesWizzRequestHandler(BaseHTTPRequestHandler):
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    server = MoviesWizzHTTPServer(("127.0.0.1", 8000), DATABASE_PATH)
-    LOGGER.info("Movies Wizz is available at http://127.0.0.1:8000")
+    host = os.environ.get("HOST", "127.0.0.1")
+    try:
+        port = int(os.environ.get("PORT", "8000"))
+    except ValueError as error:
+        raise ValueError("PORT must be a valid integer.") from error
+    server = MoviesWizzHTTPServer((host, port), DATABASE_PATH)
+    LOGGER.info("Movies Wizz is available at http://%s:%s", host, port)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
